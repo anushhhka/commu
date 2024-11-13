@@ -14,7 +14,7 @@ class VillageMemberSignUpForm extends StatelessWidget {
       instructions: "Please fill out the following details.",
       questions: [
         "Email",
-        "Full Name of the Member",
+        "Full Name of the Membr",
         "Middle Name / Husband's Name",
         "Mother's Name (Not to be filled by married woman)"
       ],
