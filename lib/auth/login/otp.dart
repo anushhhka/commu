@@ -29,7 +29,7 @@ class _OTPState extends State<OTP> {
       if (userCredential.user != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Homepage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       }
     } catch (e) {
