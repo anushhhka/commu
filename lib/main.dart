@@ -4,7 +4,7 @@ import 'package:heyoo/splashscreen.dart';
 import 'theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'My Flutter App',
       theme: AppTheme.lightTheme, // Use the dark theme
       home: SplashScreen(),
+      debugShowCheckedModeBanner: false, // Removes the debug banner
     );
   }
 }
-
