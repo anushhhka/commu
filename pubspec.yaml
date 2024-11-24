@@ -42,6 +42,8 @@ dependencies:
   image_picker: ^1.1.2
   permission_handler: ^11.3.1
   uuid: ^4.5.1
+  intl: ^0.19.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +71,7 @@ flutter:
   assets:
      - images/1.png
      - images/welcome.png
+     - images/da.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

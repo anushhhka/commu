@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:heyoo/auth/login/phone.dart';
-import 'package:heyoo/auth/logsig.dart';
+im
 
 class LanguageSelectionScreen extends StatefulWidget {
   @override
@@ -76,10 +75,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => WelcomeScreen()),
-                        );
+                        _navigateWithFade(context, Mobile());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue[900],
@@ -156,4 +152,23 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
       ),
     );
   }
+
+  // Function for fade transition
+  void _navigateWithFade(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: Duration(seconds: 1), // Animation duration
+        pageBuilder: (context, animation, secondaryAnimation) => page,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
 }
+
+

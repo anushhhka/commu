@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:heyoo/homepage.dart';
+import 'package:heyoo/new.dart';
 
 class OTP extends StatefulWidget {
   final String verificationId;
@@ -29,8 +30,8 @@ class _OTPState extends State<OTP> {
       if (userCredential.user != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Homepage()),
-        );
+          MaterialPageRoute(builder: (context) => BottomNavBarExample(),
+        ));
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
