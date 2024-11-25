@@ -5,8 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class VillageMemberSignUpForm extends StatelessWidget {
-  final String userId = DateTime.now().millisecondsSinceEpoch.toString(); // Generate a user ID once
-
   @override
   Widget build(BuildContext context) {
     return QuestionPage(
@@ -14,19 +12,20 @@ class VillageMemberSignUpForm extends StatelessWidget {
       instructions: "Please fill out the following details.",
       questions: [
         "Email",
-        "Full Name of the Membr",
+        "Full Name of the Member",
         "Middle Name / Husband's Name",
-        "Mother's Name (Not to be filled by married woman)"
+        "Mother's Name (Not to be filled by married woman)",
+        "Mobile Number (This will be your WhatsApp number)",
       ],
-      userId: userId, // Pass userId to the next pages
-      nextScreen: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SecondQuestionPage(userId: userId),
-        ),
-      ),
       progress: 1 / 5,
       showUploadOption: true,
+      nextScreen: (String whatsappNumber) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              SecondQuestionPage(whatsappNumber: whatsappNumber),
+        ),
+      ),
     );
   }
 }
@@ -35,18 +34,16 @@ class QuestionPage extends StatefulWidget {
   final String title;
   final String instructions;
   final List<String> questions;
-  final VoidCallback nextScreen;
   final double progress;
   final bool showUploadOption;
-  final String userId; // Add userId
+  final Function(String) nextScreen;
 
   QuestionPage({
     required this.title,
     required this.instructions,
     required this.questions,
-    required this.nextScreen,
     required this.progress,
-    required this.userId, // Accept userId
+    required this.nextScreen,
     this.showUploadOption = false,
   });
 
@@ -58,11 +55,13 @@ class _QuestionPageState extends State<QuestionPage> {
   List<TextEditingController> _controllers = [];
   File? _image;
   final ImagePicker _picker = ImagePicker();
+  String whatsappNumber = ""; // Store WhatsApp number
 
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(widget.questions.length, (_) => TextEditingController());
+    _controllers =
+        List.generate(widget.questions.length, (_) => TextEditingController());
   }
 
   @override
@@ -84,19 +83,62 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Future<void> _saveAnswersToFirestore() async {
     try {
-      DocumentReference userDocRef = FirebaseFirestore.instance.collection('village_user_profiles').doc(widget.userId);
-
-      // Create a map for the answers
-      Map<String, String> answers = {};
-      for (int i = 0; i < widget.questions.length; i++) {
-        answers[widget.questions[i]] = _controllers[i].text;
+      // Ensure WhatsApp number is valid
+      String whatsappNumber = _controllers.last.text
+          .trim(); // Assume last question is WhatsApp number
+      if (whatsappNumber.isEmpty) {
+        throw Exception("WhatsApp number cannot be empty.");
       }
 
-      // Update the Firestore document for the current user
-      await userDocRef.set({
-        'answers': answers,
-        'image_path': _image?.path,
-      }, SetOptions(merge: true));
+      DocumentReference userDocRef = FirebaseFirestore.instance
+          .collection('village_user_profiles')
+          .doc(whatsappNumber);
+
+      // Store the answers for each page in separate collections
+      // Personal Info
+      CollectionReference personalInfoRef =
+          userDocRef.collection('personal_info');
+      for (int i = 0; i < widget.questions.length; i++) {
+        await personalInfoRef.doc(widget.questions[i]).set({
+          'answer': _controllers[i].text,
+        });
+      }
+
+      // Image Path (if available)
+      if (_image != null) {
+        await personalInfoRef.doc('image_path').set({
+          'path': _image?.path,
+        });
+      }
+
+      // Family Info
+      CollectionReference familyInfoRef = userDocRef.collection('family_info');
+      // Add your family info data here
+      await familyInfoRef.doc('family_info').set({
+        'answer': 'Family data here', // Replace with actual family data
+      });
+
+      // Career Info
+      CollectionReference careerInfoRef = userDocRef.collection('career_info');
+      // Add your career info data here
+      await careerInfoRef.doc('career_info').set({
+        'answer': 'Career data here', // Replace with actual career data
+      });
+
+      // Address Info
+      CollectionReference addressInfoRef =
+          userDocRef.collection('address_info');
+      // Add your address info data here
+      await addressInfoRef.doc('address_info').set({
+        'answer': 'Address data here', // Replace with actual address data
+      });
+
+      // Health Info
+      CollectionReference healthInfoRef = userDocRef.collection('health_info');
+      // Add your health info data here
+      await healthInfoRef.doc('health_info').set({
+        'answer': 'Health data here', // Replace with actual health data
+      });
 
       print("Data saved successfully.");
     } catch (e) {
@@ -149,14 +191,15 @@ class _QuestionPageState extends State<QuestionPage> {
                   children: [
                     _image != null
                         ? CircleAvatar(
-                      radius: 50,
-                      backgroundImage: FileImage(_image!),
-                    )
+                            radius: 50,
+                            backgroundImage: FileImage(_image!),
+                          )
                         : CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.grey[300],
-                      child: Icon(Icons.person, color: Colors.grey[700], size: 50),
-                    ),
+                            radius: 50,
+                            backgroundColor: Colors.grey[300],
+                            child: Icon(Icons.person,
+                                color: Colors.grey[700], size: 50),
+                          ),
                     TextButton.icon(
                       onPressed: _pickImage,
                       icon: Icon(Icons.upload_file, color: Colors.white),
@@ -179,7 +222,8 @@ class _QuestionPageState extends State<QuestionPage> {
                         decoration: InputDecoration(
                           labelText: widget.questions[index],
                           labelStyle: TextStyle(color: Colors.blueAccent),
-                          prefixIcon: Icon(Icons.person, color: Colors.blueAccent),
+                          prefixIcon:
+                              Icon(Icons.person, color: Colors.blueAccent),
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -190,7 +234,8 @@ class _QuestionPageState extends State<QuestionPage> {
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(color: Colors.blueAccent),
                           ),
-                          contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 16),
                           isDense: true,
                         ),
                         style: TextStyle(color: Colors.black87),
@@ -204,11 +249,11 @@ class _QuestionPageState extends State<QuestionPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     await _saveAnswersToFirestore();
-                    print("Moving to the next screen.");
-                    widget.nextScreen();
+                    widget.nextScreen(whatsappNumber);
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0, vertical: 12.0),
                     child: Text(
                       "Next",
                       style: TextStyle(
@@ -237,9 +282,9 @@ class _QuestionPageState extends State<QuestionPage> {
 }
 
 class SecondQuestionPage extends StatelessWidget {
-  final String userId;
+  final String whatsappNumber;
 
-  SecondQuestionPage({required this.userId});
+  SecondQuestionPage({required this.whatsappNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -252,55 +297,55 @@ class SecondQuestionPage extends StatelessWidget {
         "Surname",
         "Full Name of Family Head",
         "Relation with Head of the family",
-
       ],
-      userId: userId, // Pass userId to next page
-      nextScreen: () => Navigator.push(
+      progress: 2 / 5,
+      nextScreen: (String _) => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ThirdQuestionPage(userId: userId),
+          builder: (context) =>
+              ThirdQuestionPage(whatsappNumber: whatsappNumber),
         ),
       ),
-      progress: 2 / 5,
     );
   }
 }
 
 class ThirdQuestionPage extends StatelessWidget {
-  final String userId;
+  final String whatsappNumber;
 
-  ThirdQuestionPage({required this.userId});
+  ThirdQuestionPage({required this.whatsappNumber});
 
   @override
   Widget build(BuildContext context) {
     return QuestionPage(
-      title: "Address Information",
-      instructions: "Let us know more about your career background.",
+      title: "Career Background",
+      instructions:
+          "Let us know more about your career and address information.",
       questions: [
         "Date of Birth",
         "Hobbies",
         "Education",
-        "Education Status"
+        "Education Status",
         "Blood Group",
-        "Mobile/Whatsapp Number",
-        "Additional Phone/Mobile Number"
       ],
-      userId: userId, // Pass userId to next page
-      nextScreen: () => Navigator.push(
+      progress: 3 / 5,
+      nextScreen: (String _) => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => FourthQuestionPage(userId: userId),
+          builder: (context) => FourthQuestionPage(
+            whatsappNumber: whatsappNumber,
+            userId: '',
+          ),
         ),
       ),
-      progress: 3 / 5,
     );
   }
 }
 
 class FourthQuestionPage extends StatelessWidget {
-  final String userId;
+  final String whatsappNumber;
 
-  FourthQuestionPage({required this.userId});
+  FourthQuestionPage({required this.whatsappNumber, required String userId});
 
   @override
   Widget build(BuildContext context) {
@@ -315,21 +360,28 @@ class FourthQuestionPage extends StatelessWidget {
         "Own or Family's Business/Office Address",
         "Total number of family members residing at the same address",
       ],
-      userId: userId, // Pass userId to PendingApprovalScreen
-      nextScreen: () => Navigator.push(
+      progress: 4 / 5,
+      nextScreen: (String _) => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => FifthQuestionPage(userId: userId),
+          builder: (context) => FifthQuestionPage(
+              userId: '',
+              whatsappNumber: whatsappNumber), // Pass the whatsappNumber
         ),
       ),
-      progress: 4 / 5,
+      showUploadOption: false, // Assuming no upload option is needed here
     );
   }
 }
+
 class FifthQuestionPage extends StatelessWidget {
   final String userId;
+  final String
+      whatsappNumber; // Add this if you also want to pass whatsappNumber
 
-  FifthQuestionPage({required this.userId});
+  FifthQuestionPage(
+      {required this.userId,
+      required this.whatsappNumber}); // Include whatsappNumber if needed
 
   @override
   Widget build(BuildContext context) {
@@ -341,19 +393,16 @@ class FifthQuestionPage extends StatelessWidget {
         "Married Date",
         "Mavitra Name(For Married woman only)",
         "Mavitra Village(For Married woman only)",
-
       ],
-      userId: userId, // Pass userId to PendingApprovalScreen
-      nextScreen: () => Navigator.push(
+      // userId: userId, // Pass userId to QuestionPage
+      nextScreen: (String _) => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => PendingApprovalScreen(),
+          builder: (context) =>
+              PendingApprovalScreen(), // Ensure PendingApprovalScreen accepts necessary parameters
         ),
       ),
       progress: 5 / 5,
     );
   }
 }
-
-
-

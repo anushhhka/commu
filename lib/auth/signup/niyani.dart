@@ -5,7 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class ProfileBuildingScreen extends StatelessWidget {
-  final String userId = DateTime.now().millisecondsSinceEpoch.toString(); // Generate a user ID once
+  final String userId = DateTime.now()
+      .millisecondsSinceEpoch
+      .toString(); // Generate a user ID once
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,8 @@ class _QuestionPageState extends State<QuestionPage> {
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(widget.questions.length, (_) => TextEditingController());
+    _controllers =
+        List.generate(widget.questions.length, (_) => TextEditingController());
   }
 
   @override
@@ -84,7 +87,9 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Future<void> _saveAnswersToFirestore() async {
     try {
-      DocumentReference userDocRef = FirebaseFirestore.instance.collection('user_profiles').doc(widget.userId);
+      DocumentReference userDocRef = FirebaseFirestore.instance
+          .collection('user_profiles')
+          .doc(widget.userId);
 
       // Create a map for the answers
       Map<String, String> answers = {};
@@ -149,14 +154,15 @@ class _QuestionPageState extends State<QuestionPage> {
                   children: [
                     _image != null
                         ? CircleAvatar(
-                      radius: 50,
-                      backgroundImage: FileImage(_image!),
-                    )
+                            radius: 50,
+                            backgroundImage: FileImage(_image!),
+                          )
                         : CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.grey[300],
-                      child: Icon(Icons.person, color: Colors.grey[700], size: 50),
-                    ),
+                            radius: 50,
+                            backgroundColor: Colors.grey[300],
+                            child: Icon(Icons.person,
+                                color: Colors.grey[700], size: 50),
+                          ),
                     TextButton.icon(
                       onPressed: _pickImage,
                       icon: Icon(Icons.upload_file, color: Colors.white),
@@ -179,7 +185,8 @@ class _QuestionPageState extends State<QuestionPage> {
                         decoration: InputDecoration(
                           labelText: widget.questions[index],
                           labelStyle: TextStyle(color: Colors.blueAccent),
-                          prefixIcon: Icon(Icons.person, color: Colors.blueAccent),
+                          prefixIcon:
+                              Icon(Icons.person, color: Colors.blueAccent),
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -190,7 +197,8 @@ class _QuestionPageState extends State<QuestionPage> {
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(color: Colors.blueAccent),
                           ),
-                          contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 16),
                           isDense: true,
                         ),
                         style: TextStyle(color: Colors.black87),
@@ -208,7 +216,8 @@ class _QuestionPageState extends State<QuestionPage> {
                     widget.nextScreen();
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0, vertical: 12.0),
                     child: Text(
                       "Next",
                       style: TextStyle(
@@ -258,7 +267,10 @@ class SecondQuestionPage extends StatelessWidget {
       nextScreen: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ThirdQuestionPage(userId: userId),
+          builder: (context) => ThirdQuestionPage(
+            userId: userId,
+            whatsappNumber: '',
+          ),
         ),
       ),
       progress: 2 / 4,
@@ -269,7 +281,7 @@ class SecondQuestionPage extends StatelessWidget {
 class ThirdQuestionPage extends StatelessWidget {
   final String userId;
 
-  ThirdQuestionPage({required this.userId});
+  ThirdQuestionPage({required this.userId, required String whatsappNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -322,5 +334,3 @@ class FourthQuestionPage extends StatelessWidget {
     );
   }
 }
-
-
