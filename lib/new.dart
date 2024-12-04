@@ -16,7 +16,6 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
   final List<Widget> _pages = [
     AnnouncementsScreen(),
     EventsScreen(),
-
     ProfilePage(),
   ];
 
@@ -43,7 +42,6 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
             icon: Icon(Icons.event),
             label: 'Events',
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',

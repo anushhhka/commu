@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:heyoo/auth/signup/niyani.dart';
 import 'package:heyoo/auth/signup/village_member.dart';
 
-
 class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -39,7 +38,8 @@ class SignUpScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => VillageMemberSignUpForm()),
+                      MaterialPageRoute(
+                          builder: (context) => VillageMemberSignUpForm()),
                     );
                   },
                   child: Container(
@@ -81,7 +81,8 @@ class SignUpScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ProfileBuildingScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => ProfileBuildingScreen()),
                     );
                   },
                   child: Container(
