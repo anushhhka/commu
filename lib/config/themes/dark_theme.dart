@@ -30,23 +30,23 @@ ThemeData dark_theme() => ThemeData(
         unselectedLabelColor: AppColors.white.withOpacity(0.5),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        fillColor: AppColors.greyDark,
+        fillColor: AppColors.white.withOpacity(0.2),
         filled: true,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         hintStyle: Typo.bodyLarge.copyWith(
-          color: AppColors.slightlyDarkGray.withOpacity(0.45),
+          color: AppColors.slightlyDarkGray.withOpacity(0.6),
         ),
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14.0,
           horizontal: 12.0,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
           gapPadding: 0,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(
             color: AppColors.white,
             width: 2,

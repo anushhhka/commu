@@ -27,14 +27,6 @@ class LoginScreen extends StatelessWidget {
                 style: Typo.headlineMedium,
               ),
               SizedBox(height: size.height * 0.03),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Phone Number',
-                  style: Typo.titleMedium,
-                ),
-              ),
-              SizedBox(height: size.height * 0.01),
               Row(
                 children: [
                   Expanded(
