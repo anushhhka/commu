@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heyoo/auth/login/phone.dart';
+import 'package:heyoo/auth/logsig.dart';
 
 
 class LanguageSelectionScreen extends StatefulWidget {
@@ -76,7 +77,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        _navigateWithFade(context, Mobile());
+                        _navigateWithFade(context, WelcomeScreen());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue[900],

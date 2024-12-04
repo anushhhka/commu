@@ -16,7 +16,8 @@ class VillageMemberSignUpForm extends StatelessWidget {
         "Email",
         "Full Name of the Membr",
         "Middle Name / Husband's Name",
-        "Mother's Name (Not to be filled by married woman)"
+        "Mother's Name (Not to be filled by married woman)",
+        "Mobile/Whatsapp Number", // Mobile/Whatsapp number question
       ],
       userId: userId, // Pass userId to the next pages
       nextScreen: () => Navigator.push(
@@ -88,15 +89,32 @@ class _QuestionPageState extends State<QuestionPage> {
 
       // Create a map for the answers
       Map<String, String> answers = {};
+      String? mobileNumber;
+
+      // Loop through the questions and save the answers
       for (int i = 0; i < widget.questions.length; i++) {
-        answers[widget.questions[i]] = _controllers[i].text;
+        String answer = _controllers[i].text;
+        answers[widget.questions[i]] = answer;
+
+        // Check if the question is about the Mobile/Whatsapp number
+        if (widget.questions[i].contains("Mobile/Whatsapp Number") || widget.questions[i].contains("Mobile Number")) {
+          mobileNumber = answer;  // Capture the mobile number
+        }
       }
 
-      // Update the Firestore document for the current user
+      // Save answers to Firestore
       await userDocRef.set({
         'answers': answers,
         'image_path': _image?.path,
       }, SetOptions(merge: true));
+
+      // If a mobile number is provided, store it in the MobileNumber sub-collection
+      if (mobileNumber != null && mobileNumber.isNotEmpty) {
+        await FirebaseFirestore.instance.collection('user_profiles').doc(widget.userId).collection('MobileNumber').doc('mobile_number').set({
+          'mobile_number': mobileNumber,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+      }
 
       print("Data saved successfully.");
     } catch (e) {
@@ -252,7 +270,6 @@ class SecondQuestionPage extends StatelessWidget {
         "Surname",
         "Full Name of Family Head",
         "Relation with Head of the family",
-
       ],
       userId: userId, // Pass userId to next page
       nextScreen: () => Navigator.push(
@@ -280,10 +297,10 @@ class ThirdQuestionPage extends StatelessWidget {
         "Date of Birth",
         "Hobbies",
         "Education",
-        "Education Status"
+        "Education Status",
         "Blood Group",
-        "Mobile/Whatsapp Number",
-        "Additional Phone/Mobile Number"
+        "Whatsapp Number",
+        "Mobile Number"
       ],
       userId: userId, // Pass userId to next page
       nextScreen: () => Navigator.push(
@@ -305,17 +322,16 @@ class FourthQuestionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return QuestionPage(
-      title: "Some More Information",
-      instructions: "Tell us a bit about your health background.",
+      title: "Upload Documents",
+      instructions: "Please upload your required documents.",
       questions: [
-        "Residential Address",
-        "State",
-        "Pin Code",
-        "Activity/Employee Status",
-        "Own or Family's Business/Office Address",
-        "Total number of family members residing at the same address",
+        "Document 1",
+        "Document 2",
+        "Document 3",
+        "Document 4",
+        "Document 5"
       ],
-      userId: userId, // Pass userId to PendingApprovalScreen
+      userId: userId, // Pass userId to next page
       nextScreen: () => Navigator.push(
         context,
         MaterialPageRoute(
@@ -326,6 +342,7 @@ class FourthQuestionPage extends StatelessWidget {
     );
   }
 }
+
 class FifthQuestionPage extends StatelessWidget {
   final String userId;
 
@@ -333,27 +350,11 @@ class FifthQuestionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return QuestionPage(
-      title: "Some More Information",
-      instructions: "Tell us a bit about your health background.",
-      questions: [
-        "Married Status",
-        "Married Date",
-        "Mavitra Name(For Married woman only)",
-        "Mavitra Village(For Married woman only)",
-
-      ],
-      userId: userId, // Pass userId to PendingApprovalScreen
-      nextScreen: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PendingApprovalScreen(),
-        ),
+    return Scaffold(
+      appBar: AppBar(title: Text("Final Step")),
+      body: Center(
+        child: Text("You have completed the registration process!"),
       ),
-      progress: 5 / 5,
     );
   }
 }
-
-
-

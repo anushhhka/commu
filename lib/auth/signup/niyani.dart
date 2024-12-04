@@ -98,6 +98,16 @@ class _QuestionPageState extends State<QuestionPage> {
         'image_path': _image?.path,
       }, SetOptions(merge: true));
 
+      // Store the mobile number in the MobileNumber sub-collection
+      String mobileNumber = _controllers[4].text; // Assuming Mobile/Whatsapp number is at index 4 in the list
+
+      if (mobileNumber.isNotEmpty) {
+        await userDocRef.collection('MobileNumber').add({
+          'mobile_number': mobileNumber,
+          'timestamp': FieldValue.serverTimestamp(), // You can add a timestamp for when the number was added
+        });
+      }
+
       print("Data saved successfully.");
     } catch (e) {
       print("Error saving data to Firestore: $e");
@@ -251,8 +261,8 @@ class SecondQuestionPage extends StatelessWidget {
         "Hobbies",
         "Education",
         "Blood Group",
-        "Mobile/Whatsapp Number",
-        "Additional Phone/Mobile Number"
+        "Mobile Number",
+        "Additional Number"
       ],
       userId: userId, // Pass userId to next page
       nextScreen: () => Navigator.push(
@@ -322,5 +332,3 @@ class FourthQuestionPage extends StatelessWidget {
     );
   }
 }
-
-

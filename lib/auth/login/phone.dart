@@ -30,7 +30,7 @@ class _MobileState extends State<Mobile> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-              colors: [Colors.blue[200]!, Colors.blueAccent],
+            colors: [Colors.blue[200]!, Colors.blueAccent],
           ),
         ),
         child: Padding(
@@ -41,7 +41,7 @@ class _MobileState extends State<Mobile> {
             children: [
               // Logo image with reduced height
               Image.asset(
-                'images/welcome.png', // Path to your logo image
+                'images/NA.jpg', // Path to your logo image
                 width: 250,
                 height: screenHeight * 0.25,
               ),
@@ -112,30 +112,43 @@ class _MobileState extends State<Mobile> {
                   onPressed: _isValidNumber
                       ? () async {
                     String fullPhoneNumber = '+91$phone';
-                    await FirebaseAuth.instance.verifyPhoneNumber(
-                      phoneNumber: fullPhoneNumber,
-                      verificationCompleted: (PhoneAuthCredential credential) {
-                        FirebaseAuth.instance.signInWithCredential(credential);
-                      },
-                      verificationFailed: (FirebaseAuthException e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Verification failed: ${e.message}'),
-                          ),
-                        );
-                      },
-                      codeSent: (String verificationId, int? resendToken) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OTP(verificationId: verificationId),
-                          ),
-                        );
-                      },
-                      codeAutoRetrievalTimeout: (String verificationId) {
-                        print('Code auto retrieval timeout: $verificationId');
-                      },
-                    );
+
+                    // Simulate a successful phone number registration check
+                    bool isRegistered = true; // Assume the phone number is manually added
+
+                    if (isRegistered) {
+                      await FirebaseAuth.instance.verifyPhoneNumber(
+                        phoneNumber: fullPhoneNumber,
+                        verificationCompleted: (PhoneAuthCredential credential) {
+                          FirebaseAuth.instance.signInWithCredential(credential);
+                        },
+                        verificationFailed: (FirebaseAuthException e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Verification failed: ${e.message}'),
+                            ),
+                          );
+                        },
+                        codeSent: (String verificationId, int? resendToken) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OTP(verificationId: verificationId),
+                            ),
+                          );
+                        },
+                        codeAutoRetrievalTimeout: (String verificationId) {
+                          print('Code auto retrieval timeout: $verificationId');
+                        },
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('This number is not registered.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                   }
                       : () {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -158,7 +171,7 @@ class _MobileState extends State<Mobile> {
               const SizedBox(height: 10),
 
               const Text(
-                'By proceeding, you consent to get calls, WhatsApp, or SMS/RCS messages, including by automated means, from EasyMazdoor and its affiliates to the number provided.',
+                'By proceeding, you consent to get calls, WhatsApp, or SMS/RCS messages, including by automated means, from Nana Asambia and its affiliates to the number provided.',
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.white,

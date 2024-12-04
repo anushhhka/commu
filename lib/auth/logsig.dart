@@ -17,14 +17,14 @@ class WelcomeScreen extends StatelessWidget {
                 // Top Illustration or Logo
                 Container(
                   height: 150,
-                  child: Image.asset('images/welcome.png',
+                  child: Image.asset('images/NA.jpg',
                       fit: BoxFit.contain),
                 ),
                 SizedBox(height: 24),
 
                 // Welcome Text
                 Text(
-                  'Welcome to Heyoo!',
+                  'Welcome to Nana Asambia!',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,

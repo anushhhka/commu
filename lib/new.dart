@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:heyoo/announcements/announcement.dart';
-import 'package:heyoo/auth/signup/niyani.dart';
+import 'package:heyoo/pages/announcement.dart';
+import 'package:heyoo/pages/events.dart';
+import 'package:heyoo/pages/homepage.dart';
 import 'package:heyoo/profilepage/profilepage.dart';
 
 class BottomNavBarExample extends StatefulWidget {
@@ -11,11 +12,11 @@ class BottomNavBarExample extends StatefulWidget {
 class _BottomNavBarExampleState extends State<BottomNavBarExample> {
   int _currentIndex = 0;
 
-  // Pages for each tab
+  // Pages for each tab (including Home)
   final List<Widget> _pages = [
-    HomeScreen(),
-    EventsScreen(),
     AnnouncementsScreen(),
+    EventsScreen(),
+
     ProfilePage(),
   ];
 
@@ -35,17 +36,14 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.campaign),
+            label: 'Announcements',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.event),
             label: 'Events',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.campaign),
-            label: 'Announcements',
-          ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
@@ -57,19 +55,6 @@ class _BottomNavBarExampleState extends State<BottomNavBarExample> {
 }
 
 // Placeholder screens for each tab
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Home Screen'));
-  }
-}
-
-class EventsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Events Screen'));
-  }
-}
 
 
 
