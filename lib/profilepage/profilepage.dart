@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:heyoo/auth/logsig.dart';
 import 'package:heyoo/profilepage/contactbook.dart';
 import 'package:heyoo/profilepage/generalcontact.dart';
 import 'package:heyoo/profilepage/upload%20documents.dart';
@@ -38,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
       final User? user = _auth.currentUser;
       if (user != null) {
         DocumentSnapshot userData =
-        await _firestore.collection('newusers').doc(user.uid).get();
+            await _firestore.collection('newusers').doc(user.uid).get();
 
         if (userData.exists) {
           setState(() {
@@ -61,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
     try {
       final picker = ImagePicker();
       final pickedFile =
-      await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+          await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
 
       if (pickedFile != null) {
         setState(() {
@@ -132,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             backgroundImage: imageUrl.isNotEmpty
                                 ? FileImage(File(imageUrl))
                                 : const AssetImage('images/da.png')
-                            as ImageProvider,
+                                    as ImageProvider,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -155,24 +154,31 @@ class _ProfilePageState extends State<ProfilePage> {
                     buildActionButton("Contact Book", Icons.contacts, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ContactBookScreen()), // Navigate to ContactBook
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ContactBookScreen()), // Navigate to ContactBook
                       );
                       print("Navigate to Contact Book");
                     }),
                     buildActionButton("Upload Forms", Icons.upload_file, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UploadScreen()), // Navigate to UploadScreen
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                UploadScreen()), // Navigate to UploadScreen
                       );
                       print("Upload Document Clicked");
                     }),
                     buildActionButton("Download Form", Icons.download, () {
                       print("Download Form Clicked");
                     }),
-                    buildActionButton("General Contact", Icons.contact_phone, () {
+                    buildActionButton("General Contact", Icons.contact_phone,
+                        () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => GeneralContactScreen()), // Navigate to GeneralContact
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                GeneralContactScreen()), // Navigate to GeneralContact
                       );
                       print("General Contact Clicked");
                     }),
@@ -183,10 +189,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         print("Logout successful");
 
                         // Navigate to the login screen after logout
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => WelcomeScreen()), // Replace with your login screen
-                        );
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           WelcomeScreen()), // Replace with your login screen
+                        // );
                       } catch (e) {
                         print("Error logging out: $e");
                       }
@@ -224,7 +232,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildActionButton(String title, IconData icon, VoidCallback onPressed) {
+  Widget buildActionButton(
+      String title, IconData icon, VoidCallback onPressed) {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Padding(

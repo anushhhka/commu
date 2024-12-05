@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:heyoo/auth/signup/signup.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/config/themes/typograph.dart';
+import 'package:heyoo/screens/auth/otp_screen.dart';
+import 'package:heyoo/screens/auth/signup_screen.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -58,7 +59,15 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: size.height * 0.03),
-              PrimaryElevatedButton(buttonText: 'Send OTP', onPressed: () {}),
+              PrimaryElevatedButton(
+                  buttonText: 'Send OTP',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => OTPScreen(),
+                      ),
+                    );
+                  }),
               SizedBox(height: size.height * 0.04),
               PrimaryElevatedButton(
                 buttonText: 'Create New Account',
@@ -66,7 +75,7 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => SignUpScreen(),
+                      builder: (context) => const SignUpScreen(),
                     ),
                   );
                 },

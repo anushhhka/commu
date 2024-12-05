@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:heyoo/auth/login/phone.dart';
-import 'package:heyoo/auth/logsig.dart';
-
 
 class LanguageSelectionScreen extends StatefulWidget {
   @override
-  _LanguageSelectionScreenState createState() => _LanguageSelectionScreenState();
+  _LanguageSelectionScreenState createState() =>
+      _LanguageSelectionScreenState();
 }
 
 class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
@@ -77,7 +75,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        _navigateWithFade(context, WelcomeScreen());
+                        // _navigateWithFade(context, WelcomeScreen());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue[900],
@@ -146,7 +144,9 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
               ),
             ),
             Icon(
-              isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+              isSelected
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked,
               color: isSelected ? Colors.blueAccent : Colors.black38,
             ),
           ],
@@ -172,5 +172,3 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     );
   }
 }
-
-

@@ -32,6 +32,9 @@ ThemeData dark_theme() => ThemeData(
       inputDecorationTheme: InputDecorationTheme(
         fillColor: AppColors.white.withOpacity(0.2),
         filled: true,
+        counterStyle: Typo.bodyMedium.copyWith(
+          color: AppColors.slightlyDarkGray,
+        ),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         hintStyle: Typo.bodyLarge.copyWith(
           color: AppColors.slightlyDarkGray.withOpacity(0.6),

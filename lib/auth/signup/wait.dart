@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:heyoo/auth/logsig.dart';
 
 class PendingApprovalScreen extends StatelessWidget {
   @override
@@ -46,11 +45,12 @@ class PendingApprovalScreen extends StatelessWidget {
                 SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => WelcomeScreen(),));
+                    // Navigator.push(context,
+                    // MaterialPageRoute(builder: (context) => WelcomeScreen(),));
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 14.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 32.0, vertical: 14.0),
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.blueAccent,
                     shape: RoundedRectangleBorder(
