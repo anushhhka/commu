@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/config/themes/typograph.dart';
-import 'package:heyoo/screens/auth/otp_screen.dart';
-import 'package:heyoo/screens/auth/signup_screen.dart';
+import 'package:heyoo/screens/auth/login/otp_screen.dart';
+import 'package:heyoo/screens/auth/login/signup_screen.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 
 class LoginScreen extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heyoo/config/themes/typograph.dart';
+import 'package:heyoo/screens/auth/signup/village_member.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -20,7 +21,13 @@ class SignUpScreen extends StatelessWidget {
                   Text('Welcome! Sign Up as:', style: Typo.headlineSmall),
                   SizedBox(height: size.height * 0.03),
                   PrimaryElevatedButton(
-                      buttonText: "Village Member", onPressed: () {}),
+                      buttonText: "Village Member",
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VillageMember()));
+                      }),
                   SizedBox(height: size.height * 0.03),
                   PrimaryElevatedButton(
                     buttonText: "Niyani",

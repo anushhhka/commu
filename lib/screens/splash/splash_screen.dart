@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:heyoo/screens/auth/login_screen.dart';
+import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/main/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
