@@ -18,7 +18,7 @@ class TextFieldBuilder extends StatelessWidget {
       itemBuilder: (context, index) {
         bool isMobileNumber = questions[index].contains("Mobile Number") ||
             questions[index].contains("Whatsapp Number");
-        bool isDateOfBirth = questions[index].contains("Date of Birth");
+        bool isDateOfBirth = questions[index].contains("Date");
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(

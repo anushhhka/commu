@@ -83,6 +83,8 @@ class _VillageMemberState extends State<VillageMember> {
             Icons.arrow_back_ios,
           ),
         ),
+        title: const Text('Village Member'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

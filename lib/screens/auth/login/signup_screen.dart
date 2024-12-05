@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heyoo/config/themes/typograph.dart';
+import 'package:heyoo/screens/auth/signup/niyani.dart';
 import 'package:heyoo/screens/auth/signup/village_member.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 
@@ -26,13 +27,18 @@ class SignUpScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => VillageMember()));
+                                builder: (context) => const VillageMember()));
                       }),
                   SizedBox(height: size.height * 0.03),
                   PrimaryElevatedButton(
                     buttonText: "Niyani",
                     buttonBackgroundColor: Colors.transparent,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Niyani()));
+                    },
                   ),
                 ],
               ),
