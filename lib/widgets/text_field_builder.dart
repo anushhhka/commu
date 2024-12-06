@@ -13,12 +13,15 @@ class TextFieldBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     return ListView.builder(
+      shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: questions.length,
       itemBuilder: (context, index) {
         bool isMobileNumber = questions[index].contains("Mobile Number") ||
-            questions[index].contains("Whatsapp Number");
+            questions[index].contains("Whatsapp Number") ||
+            questions[index].contains("Additional Number");
         bool isDateOfBirth = questions[index].contains("Date");
+        bool isPinCode = questions[index].contains('Pin Code');
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
@@ -63,10 +66,26 @@ class TextFieldBuilder extends StatelessWidget {
                           });
                         }
                       : null,
-                  keyboardType: isMobileNumber ? TextInputType.phone : null,
-                  maxLength: isMobileNumber ? 10 : null,
+                  keyboardType: (isMobileNumber || isPinCode)
+                      ? TextInputType.phone
+                      : null,
+                  maxLength: isMobileNumber
+                      ? 10
+                      : isPinCode
+                          ? 6
+                          : null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'This field cannot be empty';
+                    }
+                    if (isMobileNumber && value.length != 10) {
+                      return 'Enter a valid 10-digit mobile number';
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: questions[index],
+                    errorMaxLines: 2,
                   ),
                 ),
               ),
