@@ -1,9 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
+import 'package:heyoo/config/themes/typograph.dart';
 import 'package:heyoo/constants/app_constants.dart';
+import 'package:heyoo/models/base_item_model.dart';
+import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/success_screen.dart';
 import 'package:heyoo/services/firebase/signup_service.dart';
+import 'package:heyoo/services/firebase/storage_service.dart';
+import 'package:heyoo/widgets/phone_text_field.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 import 'package:heyoo/widgets/text_field_builder.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,6 +27,7 @@ class _NiyaniState extends State<Niyani> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final List<bool> _pageValidationStatus = [false, false, false, false];
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   final AppConstants _appConstants = AppConstants();
 
@@ -31,6 +38,7 @@ class _NiyaniState extends State<Niyani> {
   List<TextEditingController> _fourthPageControllers = [];
 
   // Separate GlobalKey<FormState> for each page
+  final GlobalKey<FormState> _zerothPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _firstPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _secondPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _thirdPageFormKey = GlobalKey<FormState>();
@@ -109,11 +117,19 @@ class _NiyaniState extends State<Niyani> {
             _fourthPageControllers[i].text;
       }
 
+      String? storageUrl;
+      if (_image == null) {
+        storageUrl = null;
+      } else {
+        storageUrl = await FirebaseStorageService()
+            .uploadImage(_image!, _secondPageControllers[4].text);
+      }
+
       // Save answers using the service
       bool response = await FirebaseSignUpService().saveNiyaniDetails(
         userId: _secondPageControllers[4].text,
         data: data,
-        imagePath: _image?.path,
+        imagePath: storageUrl,
       );
 
       if (response && mounted) {
@@ -121,9 +137,12 @@ class _NiyaniState extends State<Niyani> {
             MaterialPageRoute(builder: (context) {
           return const SuccessScreen();
         }));
-      } else {}
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Failed to create account. Please try again.');
+      }
     } catch (e) {
-      // print("Error saving data to Firestore: $e");
+      Fluttertoast.showToast(msg: 'An error occurred. Please try again.');
     }
   }
 
@@ -154,6 +173,7 @@ class _NiyaniState extends State<Niyani> {
               child: Container(
                 height: size.height * 0.15,
                 width: size.width * 0.2,
+                clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
                   shape: BoxShape.circle,
@@ -166,12 +186,56 @@ class _NiyaniState extends State<Niyani> {
             Expanded(
               child: PageView(
                 controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
                   setState(() {
                     _currentPage = index;
                   });
                 },
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      children: [
+                        PhoneTextField(
+                          size: size,
+                          zerothPageFormKey: _zerothPageFormKey,
+                          phoneNumberController: _phoneNumberController,
+                        ),
+                        SizedBox(height: size.height * 0.03),
+                        PrimaryElevatedButton(
+                          buttonText: 'Verify Phone Number',
+                          onPressed: () async {
+                            if (!_zerothPageFormKey.currentState!.validate()) {
+                              return;
+                            }
+
+                            BaseItemModel response =
+                                await FirebaseSignUpService()
+                                    .isNiyani(_phoneNumberController.text);
+
+                            if (response.success) {
+                              Fluttertoast.showToast(
+                                msg: 'User already exists',
+                              );
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return LoginScreen();
+                                  },
+                                ),
+                              );
+                            } else {
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 22.0),
                     child: Form(
@@ -231,7 +295,7 @@ class _NiyaniState extends State<Niyani> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(4, (index) {
+              children: List.generate(5, (index) {
                 return GestureDetector(
                   onTap: () {
                     if (index > _currentPage && _validateCurrentPage()) {
@@ -241,7 +305,7 @@ class _NiyaniState extends State<Niyani> {
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (index < _currentPage) {
+                    } else if (index < _currentPage && index != 0) {
                       _pageController.jumpToPage(index);
                     }
                   },
@@ -275,15 +339,18 @@ class _NiyaniState extends State<Niyani> {
     bool isValid = false;
     switch (_currentPage) {
       case 0:
-        isValid = _firstPageFormKey.currentState?.validate() ?? false;
+        isValid = _zerothPageFormKey.currentState?.validate() ?? false;
         break;
       case 1:
-        isValid = _secondPageFormKey.currentState?.validate() ?? false;
+        isValid = _firstPageFormKey.currentState?.validate() ?? false;
         break;
       case 2:
-        isValid = _thirdPageFormKey.currentState?.validate() ?? false;
+        isValid = _secondPageFormKey.currentState?.validate() ?? false;
         break;
       case 3:
+        isValid = _thirdPageFormKey.currentState?.validate() ?? false;
+        break;
+      case 4:
         isValid = _fourthPageFormKey.currentState?.validate() ?? false;
         break;
       default:

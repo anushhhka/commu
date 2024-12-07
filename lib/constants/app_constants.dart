@@ -25,14 +25,6 @@ class AppConstants {
     "Mobile Number",
   ];
 
-  final List<String> villageMemberFourthPageQuestions = [
-    "Document 1",
-    "Document 2",
-    "Document 3",
-    "Document 4",
-    "Document 5",
-  ];
-
   final List<String> niyaniFirstPageQuestions = [
     "Email",
     "Full Name of Married Daughter",

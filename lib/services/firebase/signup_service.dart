@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:heyoo/models/base_item_model.dart';
 
 class FirebaseSignUpService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -45,14 +46,13 @@ class FirebaseSignUpService {
   }) async {
     try {
       // Reference to the user's document in the village_member_users collection
-      // Reference to the user's document in the village_member_users collection
       DocumentReference userDocRef = _firestore
           .collection('users')
           .doc('niyani')
           .collection('user_details')
           .doc(userId);
-      // Save answers to Firestore
 
+      // Save answers to Firestore
       await userDocRef.set(
         {
           'details': data,
@@ -68,6 +68,40 @@ class FirebaseSignUpService {
       return false;
     } catch (e) {
       return false;
+    }
+  }
+
+  // check if the user is already registered as a village member
+  Future<BaseItemModel> isVillageMember(String userId) async {
+    try {
+      DocumentSnapshot doc = await _firestore
+          .collection('users')
+          .doc('village_member')
+          .collection('user_details')
+          .doc(userId)
+          .get();
+      return BaseItemModel(success: doc.exists);
+    } on FirebaseException catch (e) {
+      return BaseItemModel(success: false, error: e.message);
+    } catch (e) {
+      return BaseItemModel(success: false, error: e.toString());
+    }
+  }
+
+  // check if the user is already registered as a niyani
+  Future<BaseItemModel> isNiyani(String userId) async {
+    try {
+      DocumentSnapshot doc = await _firestore
+          .collection('users')
+          .doc('niyani')
+          .collection('user_details')
+          .doc(userId)
+          .get();
+      return BaseItemModel(success: doc.exists);
+    } on FirebaseException catch (e) {
+      return BaseItemModel(success: false, error: e.message);
+    } catch (e) {
+      return BaseItemModel(success: false, error: e.toString());
     }
   }
 }

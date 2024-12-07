@@ -1,9 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/constants/app_constants.dart';
+import 'package:heyoo/models/base_item_model.dart';
+import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/success_screen.dart';
 import 'package:heyoo/services/firebase/signup_service.dart';
+import 'package:heyoo/services/firebase/storage_service.dart';
+import 'package:heyoo/widgets/phone_text_field.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 import 'package:heyoo/widgets/text_field_builder.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,6 +26,7 @@ class _VillageMemberState extends State<VillageMember> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final List<bool> _pageValidationStatus = [false, false, false, false];
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   final AppConstants _appConstants = AppConstants();
 
@@ -28,13 +34,12 @@ class _VillageMemberState extends State<VillageMember> {
   List<TextEditingController> _firstPageControllers = [];
   List<TextEditingController> _secondPageControllers = [];
   List<TextEditingController> _thirdPageControllers = [];
-  List<TextEditingController> _fourthPageControllers = [];
 
   // Separate GlobalKey<FormState> for each page
+  final GlobalKey<FormState> _zerothPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _firstPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _secondPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _thirdPageFormKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _fourthPageFormKey = GlobalKey<FormState>();
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -56,9 +61,6 @@ class _VillageMemberState extends State<VillageMember> {
     for (var controller in _thirdPageControllers) {
       controller.dispose();
     }
-    for (var controller in _fourthPageControllers) {
-      controller.dispose();
-    }
     _pageController.dispose();
     super.dispose();
   }
@@ -74,9 +76,6 @@ class _VillageMemberState extends State<VillageMember> {
         (_) => TextEditingController());
     _thirdPageControllers = List.generate(
         _appConstants.villageMemberThirdPageQuestions.length,
-        (_) => TextEditingController());
-    _fourthPageControllers = List.generate(
-        _appConstants.villageMemberFourthPageQuestions.length,
         (_) => TextEditingController());
   }
 
@@ -104,17 +103,19 @@ class _VillageMemberState extends State<VillageMember> {
             _thirdPageControllers[i].text;
       }
 
-      // Collect answers from the fourth page and save them in a separate map
-      for (int i = 0; i < _fourthPageControllers.length; i++) {
-        documents[_appConstants.villageMemberFourthPageQuestions[i]] =
-            _fourthPageControllers[i].text;
+      String? storageUrl;
+      if (_image == null) {
+        storageUrl = null;
+      } else {
+        storageUrl = await FirebaseStorageService()
+            .uploadImage(_image!, _secondPageControllers[4].text);
       }
 
       // Save answers using the service
       bool response = await FirebaseSignUpService().saveVillageMembersDetails(
         userId: _firstPageControllers[4].text,
         data: data,
-        imagePath: _image?.path,
+        imagePath: storageUrl,
         documents: documents,
       );
 
@@ -123,9 +124,12 @@ class _VillageMemberState extends State<VillageMember> {
             MaterialPageRoute(builder: (context) {
           return const SuccessScreen();
         }));
-      } else {}
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Failed to create account. Please try again.');
+      }
     } catch (e) {
-      // print("Error saving data to Firestore: $e");
+      Fluttertoast.showToast(msg: 'An error occurred. Please try again.');
     }
   }
 
@@ -168,12 +172,56 @@ class _VillageMemberState extends State<VillageMember> {
             Expanded(
               child: PageView(
                 controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (index) {
                   setState(() {
                     _currentPage = index;
                   });
                 },
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      children: [
+                        PhoneTextField(
+                          size: size,
+                          zerothPageFormKey: _zerothPageFormKey,
+                          phoneNumberController: _phoneNumberController,
+                        ),
+                        SizedBox(height: size.height * 0.03),
+                        PrimaryElevatedButton(
+                          buttonText: 'Verify Phone Number',
+                          onPressed: () async {
+                            if (!_zerothPageFormKey.currentState!.validate()) {
+                              return;
+                            }
+
+                            BaseItemModel response =
+                                await FirebaseSignUpService().isVillageMember(
+                                    _phoneNumberController.text);
+
+                            if (response.success) {
+                              Fluttertoast.showToast(
+                                msg: 'User already exists',
+                              );
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return LoginScreen();
+                                  },
+                                ),
+                              );
+                            } else {
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 22.0),
                     child: SingleChildScrollView(
@@ -205,26 +253,12 @@ class _VillageMemberState extends State<VillageMember> {
                     child: SingleChildScrollView(
                       child: Form(
                         key: _thirdPageFormKey,
-                        child: TextFieldBuilder(
-                          questions:
-                              _appConstants.villageMemberThirdPageQuestions,
-                          controllers: _thirdPageControllers,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: _fourthPageFormKey,
                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
                           children: [
                             TextFieldBuilder(
-                              questions: _appConstants
-                                  .villageMemberFourthPageQuestions,
-                              controllers: _fourthPageControllers,
+                              questions:
+                                  _appConstants.villageMemberThirdPageQuestions,
+                              controllers: _thirdPageControllers,
                             ),
                             SizedBox(height: size.height * 0.04),
                             PrimaryElevatedButton(
@@ -255,7 +289,7 @@ class _VillageMemberState extends State<VillageMember> {
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (index < _currentPage) {
+                    } else if (index < _currentPage && index != 0) {
                       _pageController.jumpToPage(index);
                     }
                   },
@@ -289,16 +323,16 @@ class _VillageMemberState extends State<VillageMember> {
     bool isValid = false;
     switch (_currentPage) {
       case 0:
-        isValid = _firstPageFormKey.currentState?.validate() ?? false;
+        isValid = _zerothPageFormKey.currentState?.validate() ?? false;
         break;
       case 1:
-        isValid = _secondPageFormKey.currentState?.validate() ?? false;
+        isValid = _firstPageFormKey.currentState?.validate() ?? false;
         break;
       case 2:
-        isValid = _thirdPageFormKey.currentState?.validate() ?? false;
+        isValid = _secondPageFormKey.currentState?.validate() ?? false;
         break;
       case 3:
-        isValid = _fourthPageFormKey.currentState?.validate() ?? false;
+        isValid = _thirdPageFormKey.currentState?.validate() ?? false;
         break;
       default:
         isValid = false;
