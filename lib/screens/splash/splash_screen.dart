@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
         // User is not signed in
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) => LoginScreen()),
         );
       }
     });

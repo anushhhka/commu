@@ -14,6 +14,7 @@ class PrimaryElevatedButton extends StatelessWidget {
     this.height,
     this.padding,
     this.textStyle,
+    this.child,
   });
   final String buttonText;
   final void Function()? onPressed;
@@ -24,6 +25,7 @@ class PrimaryElevatedButton extends StatelessWidget {
   final double? height;
   final EdgeInsetsGeometry? padding;
   final TextStyle? textStyle;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +45,14 @@ class PrimaryElevatedButton extends StatelessWidget {
                 color: buttonBorderColor ?? AppColors.primary,
               )),
         ),
-        child: Text(
-          buttonText,
-          style: textStyle ??
-              Typo.titleLarge.copyWith(
-                color: buttonTextColor ?? AppColors.white,
-              ),
-        ),
+        child: child ??
+            Text(
+              buttonText,
+              style: textStyle ??
+                  Typo.titleLarge.copyWith(
+                    color: buttonTextColor ?? AppColors.white,
+                  ),
+            ),
       ),
     );
   }
