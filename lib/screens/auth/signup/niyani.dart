@@ -212,7 +212,8 @@ class _NiyaniState extends State<Niyani> {
 
                             BaseItemModel response =
                                 await FirebaseSignUpService()
-                                    .isNiyani(_phoneNumberController.text);
+                                    .isUserAleadyRegistered(
+                                        _phoneNumberController.text);
 
                             if (response.success) {
                               Fluttertoast.showToast(

@@ -8,7 +8,12 @@ class FirebaseSignInService {
 
   Future<BaseItemModel> sendVerificationCode(String phoneNumber) async {
     try {
-      bool userExists = await checkIfUserExists(phoneNumber);
+      bool userExists = await _firestore
+          .collection('phone_numbers')
+          .doc(phoneNumber)
+          .get()
+          .then((doc) => doc.exists);
+
       if (userExists) {
         String verificationId = '';
         await _firebaseAuth.verifyPhoneNumber(
@@ -49,42 +54,6 @@ class FirebaseSignInService {
       return BaseItemModel(success: false, error: e.message);
     } catch (e) {
       return BaseItemModel(success: false, error: e.toString());
-    }
-  }
-
-  Future<bool> checkIfUserExists(String phoneNumber) async {
-    try {
-      // Check if the user exists in the village_member collection
-      DocumentReference villageMemberDocRef = _firestore
-          .collection('users')
-          .doc('village_member')
-          .collection('user_details')
-          .doc(phoneNumber);
-
-      bool villageMemberExists =
-          await villageMemberDocRef.get().then((doc) => doc.exists);
-
-      if (villageMemberExists) {
-        return true;
-      }
-
-      // Check if the user exists in the niyani collection
-      DocumentReference niyaniDocRef = _firestore
-          .collection('users')
-          .doc('niyani')
-          .collection('user_details')
-          .doc(phoneNumber);
-
-      bool niyaniExists = await niyaniDocRef.get().then((doc) => doc.exists);
-
-      if (niyaniExists) {
-        return true;
-      }
-      return false;
-    } on FirebaseAuthException catch (e) {
-      return false;
-    } catch (e) {
-      return false;
     }
   }
 }

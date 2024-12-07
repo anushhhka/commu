@@ -197,8 +197,9 @@ class _VillageMemberState extends State<VillageMember> {
                             }
 
                             BaseItemModel response =
-                                await FirebaseSignUpService().isVillageMember(
-                                    _phoneNumberController.text);
+                                await FirebaseSignUpService()
+                                    .isUserAleadyRegistered(
+                                        _phoneNumberController.text);
 
                             if (response.success) {
                               Fluttertoast.showToast(
