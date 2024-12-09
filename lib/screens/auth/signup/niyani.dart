@@ -122,12 +122,12 @@ class _NiyaniState extends State<Niyani> {
         storageUrl = null;
       } else {
         storageUrl = await FirebaseStorageService()
-            .uploadImage(_image!, _secondPageControllers[4].text);
+            .uploadImage(_image!, _phoneNumberController.text);
       }
 
       // Save answers using the service
       bool response = await FirebaseSignUpService().saveNiyaniDetails(
-        userId: _secondPageControllers[4].text,
+        userId: _phoneNumberController.text,
         data: data,
         imagePath: storageUrl,
       );

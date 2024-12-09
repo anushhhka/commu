@@ -1,15 +1,14 @@
 class AppConstants {
   final List<String> villageMemberFirstPageQuestions = [
     "Email",
-    "Full Name of the Member",
+    "First Name",
     "Middle Name / Husband's Name",
     "Mother's Name (Not to be filled by married woman)",
-    "Mobile/Whatsapp Number",
   ];
 
   final List<String> villageMemberSecondPageQuestions = [
     "Grandfather's Name/Father in law's name",
-    "Grandmother's name",
+    "Grandmother's Name/ Mother in law's name",
     "Surname",
     "Full Name of Family Head",
     "Relation with Head of the family",
@@ -17,12 +16,36 @@ class AppConstants {
 
   final List<String> villageMemberThirdPageQuestions = [
     "Date of Birth",
-    "Hobbies",
     "Education",
     "Education Status",
     "Blood Group",
-    "Whatsapp Number",
-    "Mobile Number",
+    "Mobile Number / Whatsapp Number",
+    "Additional Number",
+    "Hobbies",
+  ];
+
+  final List<String> villageMemberFourthPageQuestions = [
+    "Residential Address",
+    "State",
+    "Pin Code",
+    "Activity/Employee Status",
+    "Business/Office Address",
+  ];
+
+  final List<String> villageMemberFifthPageQuestions = [
+    "Marital Status",
+    "Marriage Date",
+    "Mavitra Name (If married)",
+    "Mavitra Village Name (If married)",
+    "Total number of family members residing at the same address",
+  ];
+
+  final List<String> villageMemberSixthPageQuestions = [
+    "Full Name of Family Head",
+    "Relation with Head of the family",
+    "Education Status",
+    "Mavitra Name (If married)",
+    "Mavitra Village Name (If married)",
   ];
 
   final List<String> niyaniFirstPageQuestions = [
@@ -34,11 +57,11 @@ class AppConstants {
 
   final List<String> niyaniSecondPageQuestions = [
     "Date of Birth",
-    "Hobbies",
     "Education",
     "Blood Group",
-    "Mobile Number",
-    "Additional Number"
+    "Mobile Number/Whatsapp Number",
+    "Additional Number",
+    "Hobbies",
   ];
 
   final List<String> niyaniThirdPageQuestions = [
@@ -49,10 +72,10 @@ class AppConstants {
   ];
 
   final List<String> niyaniFourthPageQuestions = [
-    "Total number of family members residing at the same address",
     "Activity/Employee Status",
     "Own or Family's Business/Office Address",
+    "Marriage Date",
     "Marital Status",
-    "Marriage Date"
+    "Total number of family members residing at the same address",
   ];
 }

@@ -25,7 +25,15 @@ class _VillageMemberState extends State<VillageMember> {
   final ImagePicker _picker = ImagePicker();
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  final List<bool> _pageValidationStatus = [false, false, false, false];
+  final List<bool> _pageValidationStatus = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
   final TextEditingController _phoneNumberController = TextEditingController();
 
   final AppConstants _appConstants = AppConstants();
@@ -34,12 +42,18 @@ class _VillageMemberState extends State<VillageMember> {
   List<TextEditingController> _firstPageControllers = [];
   List<TextEditingController> _secondPageControllers = [];
   List<TextEditingController> _thirdPageControllers = [];
+  List<TextEditingController> _fourthPageControllers = [];
+  List<TextEditingController> _fifthPageControllers = [];
+  List<TextEditingController> _sixthPageControllers = [];
 
   // Separate GlobalKey<FormState> for each page
   final GlobalKey<FormState> _zerothPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _firstPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _secondPageFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _thirdPageFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _fourthPageFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _fifthPageFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _sixthPageFormKey = GlobalKey<FormState>();
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -61,6 +75,15 @@ class _VillageMemberState extends State<VillageMember> {
     for (var controller in _thirdPageControllers) {
       controller.dispose();
     }
+    for (var controller in _fourthPageControllers) {
+      controller.dispose();
+    }
+    for (var controller in _fifthPageControllers) {
+      controller.dispose();
+    }
+    for (var controller in _sixthPageControllers) {
+      controller.dispose();
+    }
     _pageController.dispose();
     super.dispose();
   }
@@ -76,6 +99,15 @@ class _VillageMemberState extends State<VillageMember> {
         (_) => TextEditingController());
     _thirdPageControllers = List.generate(
         _appConstants.villageMemberThirdPageQuestions.length,
+        (_) => TextEditingController());
+    _fourthPageControllers = List.generate(
+        _appConstants.villageMemberFourthPageQuestions.length,
+        (_) => TextEditingController());
+    _fifthPageControllers = List.generate(
+        _appConstants.villageMemberFifthPageQuestions.length,
+        (_) => TextEditingController());
+    _sixthPageControllers = List.generate(
+        _appConstants.villageMemberSixthPageQuestions.length,
         (_) => TextEditingController());
   }
 
@@ -103,17 +135,35 @@ class _VillageMemberState extends State<VillageMember> {
             _thirdPageControllers[i].text;
       }
 
+      // Collect answers from the fourth page
+      for (int i = 0; i < _fourthPageControllers.length; i++) {
+        data[_appConstants.villageMemberFourthPageQuestions[i]] =
+            _fourthPageControllers[i].text;
+      }
+
+      // Collect answers from the fifth page
+      for (int i = 0; i < _fifthPageControllers.length; i++) {
+        data[_appConstants.villageMemberFifthPageQuestions[i]] =
+            _fifthPageControllers[i].text;
+      }
+
+      // Collect answers from the sixth page
+      for (int i = 0; i < _sixthPageControllers.length; i++) {
+        data[_appConstants.villageMemberSixthPageQuestions[i]] =
+            _sixthPageControllers[i].text;
+      }
+
       String? storageUrl;
       if (_image == null) {
         storageUrl = null;
       } else {
         storageUrl = await FirebaseStorageService()
-            .uploadImage(_image!, _secondPageControllers[4].text);
+            .uploadImage(_image!, _phoneNumberController.text);
       }
 
       // Save answers using the service
       bool response = await FirebaseSignUpService().saveVillageMembersDetails(
-        userId: _firstPageControllers[4].text,
+        userId: _phoneNumberController.text,
         data: data,
         imagePath: storageUrl,
         documents: documents,
@@ -254,12 +304,51 @@ class _VillageMemberState extends State<VillageMember> {
                     child: SingleChildScrollView(
                       child: Form(
                         key: _thirdPageFormKey,
+                        child: TextFieldBuilder(
+                          questions:
+                              _appConstants.villageMemberThirdPageQuestions,
+                          controllers: _thirdPageControllers,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: _fourthPageFormKey,
+                        child: TextFieldBuilder(
+                          questions:
+                              _appConstants.villageMemberFourthPageQuestions,
+                          controllers: _fourthPageControllers,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: _fifthPageFormKey,
+                        child: TextFieldBuilder(
+                          questions:
+                              _appConstants.villageMemberFifthPageQuestions,
+                          controllers: _fifthPageControllers,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: _sixthPageFormKey,
                         child: Column(
                           children: [
                             TextFieldBuilder(
                               questions:
-                                  _appConstants.villageMemberThirdPageQuestions,
-                              controllers: _thirdPageControllers,
+                                  _appConstants.villageMemberSixthPageQuestions,
+                              controllers: _sixthPageControllers,
                             ),
                             SizedBox(height: size.height * 0.04),
                             PrimaryElevatedButton(
@@ -278,41 +367,43 @@ class _VillageMemberState extends State<VillageMember> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(4, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    if (index > _currentPage && _validateCurrentPage()) {
-                      if (index == _currentPage + 1) {
-                        _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
+            SingleChildScrollView(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(7, (index) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (index > _currentPage && _validateCurrentPage()) {
+                        if (index == _currentPage + 1) {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      } else if (index < _currentPage && index != 0) {
+                        _pageController.jumpToPage(index);
                       }
-                    } else if (index < _currentPage && index != 0) {
-                      _pageController.jumpToPage(index);
-                    }
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                    padding: const EdgeInsets.all(12.0),
-                    decoration: BoxDecoration(
-                      color: _currentPage == index
-                          ? AppColors.primary
-                          : Colors.grey,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      (index + 1).toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.all(12.0),
+                      decoration: BoxDecoration(
+                        color: _currentPage == index
+                            ? AppColors.primary
+                            : Colors.grey,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        (index + 1).toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
           ],
         ),
@@ -321,6 +412,7 @@ class _VillageMemberState extends State<VillageMember> {
   }
 
   bool _validateCurrentPage() {
+    setState(() {});
     bool isValid = false;
     switch (_currentPage) {
       case 0:
@@ -334,6 +426,15 @@ class _VillageMemberState extends State<VillageMember> {
         break;
       case 3:
         isValid = _thirdPageFormKey.currentState?.validate() ?? false;
+        break;
+      case 4:
+        isValid = _fourthPageFormKey.currentState?.validate() ?? false;
+        break;
+      case 5:
+        isValid = _fifthPageFormKey.currentState?.validate() ?? false;
+        break;
+      case 6:
+        isValid = _sixthPageFormKey.currentState?.validate() ?? false;
         break;
       default:
         isValid = false;
