@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
@@ -12,6 +14,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool _visible = false;
+  StreamSubscription<User?>? _authStateSubscription;
 
   @override
   void initState() {
@@ -31,7 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(
         const Duration(seconds: 3)); // Show splash screen for 3 seconds
 
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    _authStateSubscription =
+        FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
         // User is signed in
         Navigator.pushReplacement(
@@ -46,6 +50,12 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _authStateSubscription?.cancel(); // Cancel the listener
+    super.dispose();
   }
 
   @override
