@@ -26,7 +26,7 @@ class _NiyaniState extends State<Niyani> {
   final ImagePicker _picker = ImagePicker();
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  final List<bool> _pageValidationStatus = [false, false, false, false];
+  final List<bool> _pageValidationStatus = [false, false, false, false, false];
   final TextEditingController _phoneNumberController = TextEditingController();
 
   final AppConstants _appConstants = AppConstants();
@@ -337,6 +337,7 @@ class _NiyaniState extends State<Niyani> {
   }
 
   bool _validateCurrentPage() {
+    print('Validating page $_currentPage');
     bool isValid = false;
     switch (_currentPage) {
       case 0:
