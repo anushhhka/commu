@@ -1,13 +1,25 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:heyoo/config/themes/dark_theme.dart';
 import 'package:heyoo/firebase_options.dart';
+import 'package:heyoo/screens/main_screen.dart';
 import 'package:heyoo/screens/splash/splash_screen.dart';
+import 'package:heyoo/services/firebase/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await NotificationService.initialize();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // await Firebase.initializeApp();
+  // print(message.notification!.title);
+  // print(message.data.toString());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: dark_theme(),
-      home: const SplashScreen(),
+      home: const MainScreen(),
     );
   }
 }
