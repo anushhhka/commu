@@ -5,7 +5,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/screens/announcement_screen.dart';
 import 'package:heyoo/screens/feeds_screen.dart';
-import 'package:heyoo/screens/profile_screen.dart';
+import 'package:heyoo/screens/gallery_screen.dart';
+import 'package:heyoo/screens/profile/profile_screen.dart';
 import 'package:heyoo/services/firebase/notification_service.dart';
 
 class MainScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _widgetOptions = const [
     FeedsScreen(),
     AnnouncementScreen(),
-    ProfileScreen(),
+    GalleryScreen(),
   ];
 
   int _selectedIndex = 0;
@@ -62,7 +63,7 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications), label: 'Announcements'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.photo), label: 'Gallery'),
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {

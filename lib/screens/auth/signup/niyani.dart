@@ -1,8 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:heyoo/config/themes/app_colors.dart';
-import 'package:heyoo/config/themes/typograph.dart';
 import 'package:heyoo/constants/app_constants.dart';
 import 'package:heyoo/models/base_item_model.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
@@ -12,7 +14,6 @@ import 'package:heyoo/services/firebase/storage_service.dart';
 import 'package:heyoo/widgets/phone_text_field.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 import 'package:heyoo/widgets/text_field_builder.dart';
-import 'package:image_picker/image_picker.dart';
 
 class Niyani extends StatefulWidget {
   const Niyani({super.key});
