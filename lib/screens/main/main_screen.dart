@@ -38,7 +38,6 @@ class _MainScreenState extends State<MainScreen> {
   setFCMToken() async {
     mobileToken = await NotificationService.getMobileToken();
     if (mobileToken != null) {
-      print('Mobile Token: $mobileToken');
       FirebaseFirestore.instance
           .collection('mobile_tokens')
           .doc(FirebaseAuth.instance.currentUser!.phoneNumber)

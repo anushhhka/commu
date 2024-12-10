@@ -5,6 +5,17 @@ class AnnouncementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('No Announcements Yet !', style: TextStyle(fontSize: 20)),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
