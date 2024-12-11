@@ -6,7 +6,6 @@ import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/screens/announcement_screen.dart';
 import 'package:heyoo/screens/feeds_screen.dart';
 import 'package:heyoo/screens/gallery_screen.dart';
-import 'package:heyoo/screens/profile/profile_screen.dart';
 import 'package:heyoo/services/firebase/notification_service.dart';
 
 class MainScreen extends StatefulWidget {
@@ -60,9 +59,10 @@ class _MainScreenState extends State<MainScreen> {
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Announcements'),
+              icon: Icon(Icons.campaign), label: 'Announcements'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: 'Notifications'),
           BottomNavigationBarItem(icon: Icon(Icons.photo), label: 'Gallery'),
         ],
         currentIndex: _selectedIndex,
