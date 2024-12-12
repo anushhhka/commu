@@ -65,7 +65,7 @@ class _CarouselSliderState extends State<CarouselSlider> {
                 );
               },
               options: carousel.CarouselOptions(
-                height: 150.0,
+                height: 100.0,
                 enlargeCenterPage: true,
                 autoPlay: true,
                 aspectRatio: 16 / 9,

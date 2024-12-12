@@ -1,15 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/config/themes/typograph.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class FeedTile extends StatelessWidget {
   const FeedTile({
     super.key,
     this.text,
     this.image,
+    this.createdAt,
   });
 
   final String? text, image;
+  final Timestamp? createdAt;
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +28,17 @@ class FeedTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 20,
                 backgroundImage: AssetImage('assets/images/png/logo.png'),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Nana Asambia',
                     style: TextStyle(
                       color: AppColors.white,
@@ -42,13 +46,17 @@ class FeedTile extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    '2 hours ago',
-                    style: TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 12,
+                  if (createdAt != null)
+                    Text(
+                      timeago.format(
+                        createdAt!.toDate(),
+                        locale: 'en',
+                      ),
+                      style: const TextStyle(
+                        color: AppColors.grey,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ],

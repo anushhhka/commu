@@ -32,9 +32,11 @@ class _FeedsScreenState extends State<FeedsScreen> {
     var list = records.docs
         .map(
           (item) => FeedsModel(
-            text: item.data().containsKey('text') ? item['text'] : null,
-            image: item.data().containsKey('image') ? item['image'] : null,
-          ),
+              text: item.data().containsKey('text') ? item['text'] : null,
+              image: item.data().containsKey('image') ? item['image'] : null,
+              createdAt: item.data().containsKey('createdAt')
+                  ? item['createdAt']
+                  : null),
         )
         .toList();
     setState(() {
@@ -73,6 +75,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
                         return FeedTile(
                           text: feedslList[index].text,
                           image: feedslList[index].image,
+                          createdAt: feedslList[index].createdAt!,
                         );
                       },
                     ),
