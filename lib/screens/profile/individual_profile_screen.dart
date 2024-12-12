@@ -16,6 +16,8 @@ class IndividualProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(userProfile.dateOfBirth);
+    print(userProfile.toString());
     final bool isVillageMember = userProfile.isVillageMember;
 
     final String title =
@@ -104,7 +106,7 @@ class IndividualProfileScreen extends StatelessWidget {
               _buildRichText(
                   'Residential Address: ', userProfile.residentialAddress),
               _buildRichText('State: ', userProfile.state),
-              _buildRichText('Pin Code: ', userProfile.pinCode),
+              _buildRichText('Pin Code: ', userProfile.pinCode.toString()),
               _buildRichText('City: ', userProfile.city),
               _buildRichText('Activity/Employee Status: ',
                   userProfile.activityOrEmployeeStatus),

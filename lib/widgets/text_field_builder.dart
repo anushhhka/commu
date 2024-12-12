@@ -21,7 +21,7 @@ class TextFieldBuilder extends StatelessWidget {
             questions[index].contains("Whatsapp Number") ||
             questions[index].contains("Additional Number");
         bool isDateOfBirth = questions[index].contains("Date");
-        bool isPinCode = questions[index].contains('Pin Code');
+        bool isPinCode = questions[index].contains('Pin code ');
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
@@ -66,7 +66,8 @@ class TextFieldBuilder extends StatelessWidget {
                           });
                         }
                       : null,
-                  keyboardType: (isMobileNumber || isPinCode)
+                  keyboardType: (isMobileNumber || isPinCode ||
+            questions[index].contains("Total number of family members residing at the same address") )
                       ? TextInputType.phone
                       : null,
                   maxLength: isMobileNumber

@@ -68,8 +68,11 @@ class FirebaseProfileService {
           .map((doc) => NiyaniModel.fromJson(doc.data()))
           .toList();
 
+         print(niyaniList.length); 
+
       return niyaniList;
     } catch (e) {
+      print(e.toString());
       return [];
     }
   }

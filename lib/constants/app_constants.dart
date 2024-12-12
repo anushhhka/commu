@@ -15,7 +15,7 @@ class AppConstants {
   ];
 
   final List<String> villageMemberThirdPageQuestions = [
-    "Date of Birth",
+    "Date of Birth  ",
     "Education",
     "Education Status",
     "Blood Group",
@@ -27,7 +27,7 @@ class AppConstants {
   final List<String> villageMemberFourthPageQuestions = [
     "Residential Address",
     "State",
-    "Pin Code",
+    "Pin code ",
     "Activity/Employee Status",
     "Business/Office Address",
   ];
@@ -50,13 +50,13 @@ class AppConstants {
 
   final List<String> niyaniFirstPageQuestions = [
     "Email",
-    "Full Name of Married Daughter",
+    "Full Name of the Married Daughter",
     "Village Name",
-    "Full Name of Mavitra"
+    "Full name of Mavitra"
   ];
 
   final List<String> niyaniSecondPageQuestions = [
-    "Date of Birth",
+    "Date of Birth  ",
     "Education",
     "Blood Group",
     "Mobile Number/Whatsapp Number",
@@ -67,7 +67,7 @@ class AppConstants {
   final List<String> niyaniThirdPageQuestions = [
     "Residential Address",
     "State",
-    "Pin Code",
+    "Pin code ",
     "City"
   ];
 

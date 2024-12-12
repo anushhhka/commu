@@ -67,7 +67,7 @@ class VillageMember {
 
     return VillageMember(
       isVillageMember: true,
-      profileImage: json['imagePath'],
+      profileImage: json['image_path'],
       email: details[constants.villageMemberFirstPageQuestions[0]] ?? '',
       firstName: details[constants.villageMemberFirstPageQuestions[1]] ?? '',
       middleNameOrHusbandsName:

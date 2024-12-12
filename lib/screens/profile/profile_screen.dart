@@ -116,27 +116,27 @@ class ProfileScreen extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 20),
-              PrimaryElevatedButton(
-                buttonBackgroundColor: AppColors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.zero,
-                buttonBorderColor: AppColors.white,
-                buttonText: 'Village Member Address Book',
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const NiyaniAddressBook(),
-                    ),
-                  );
-                },
-              ),
+              // const SizedBox(height: 20),
+              // PrimaryElevatedButton(
+              //   buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+              //   borderRadius: BorderRadius.zero,
+              //   buttonBorderColor: AppColors.white,
+              //   buttonText: 'Village Member Address Book',
+              //   onPressed: () {
+              //     Navigator.of(context).push(
+              //       MaterialPageRoute(
+              //         builder: (context) => const NiyaniAddressBook(),
+              //       ),
+              //     );
+              //   },
+              // ),
               const SizedBox(height: 20),
               PrimaryElevatedButton(
                 buttonText: 'Logout',
                 borderRadius: BorderRadius.zero,
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => LoginScreen(),
                     ),

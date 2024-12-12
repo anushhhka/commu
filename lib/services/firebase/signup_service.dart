@@ -43,7 +43,7 @@ class FirebaseSignUpService {
 
   Future<bool> saveNiyaniDetails({
     required String userId, // mobile number
-    required Map<String, String> data,
+    required Map<String, dynamic> data,
     String? imagePath,
   }) async {
     try {

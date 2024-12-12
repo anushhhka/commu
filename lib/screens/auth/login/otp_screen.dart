@@ -21,7 +21,6 @@ class _OTPScreenState extends State<OTPScreen> {
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
-    print(widget.verificationId);
     return Scaffold(
       body: Center(
         child: Padding(

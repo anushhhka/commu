@@ -46,7 +46,9 @@ class NiyaniAddressBook extends StatelessWidget {
                     ),
                   ),
                   child: user.profileImage != null
-                      ? Image.network(user.profileImage!)
+                      ? Image.network(user.profileImage!,errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.person);
+                      },)
                       : const Icon(Icons.person),
                 ),
                 title: Text(

@@ -9,7 +9,10 @@ exports.checkAndSendNotifications = functions.pubsub
       const db = admin.firestore();
       const messaging = admin.messaging();
       const today = new Date();
-      const todayString = `${today.getMonth() + 1}-${today.getDate()}`;
+      const todayString = `${today.getDate()}/${today.getMonth() + 1}/${today
+          .getFullYear()
+          .toString()
+          .slice(-2)}`; // Format as DD/MM/YY
 
       try {
       // Get all documents from the users collection
@@ -28,11 +31,9 @@ exports.checkAndSendNotifications = functions.pubsub
 
             userDetailsSnapshot.forEach((doc) => {
               const data = doc.data();
-              const dob = data["Date of Birth"] ?
-              new Date(data["Date of Birth"].seconds * 1000) :
-              null;
+              const dob = data["Date of Birth"] ? data["Date of Birth"] : null;
               const marriageDate = data["Marriage Date"] ?
-              new Date(data["Marriage Date"].seconds * 1000) :
+              data["Marriage Date"] :
               null;
               let phoneNumber = data["Mobile Number/Whatsapp Number"];
 
@@ -42,11 +43,8 @@ exports.checkAndSendNotifications = functions.pubsub
               }
 
               if (
-                (dob &&
-                `${dob.getMonth() + 1}-${dob.getDate()}` === todayString) ||
-              (marriageDate &&
-                `${marriageDate.getMonth() + 1}-${marriageDate.getDate()}` ===
-                  todayString)
+                (dob && dob === todayString) ||
+              (marriageDate && marriageDate === todayString)
               ) {
                 usersToNotify.push(phoneNumber);
               }
@@ -58,8 +56,11 @@ exports.checkAndSendNotifications = functions.pubsub
         // Get mobile tokens for users to notify
           const tokensSnapshot = await db
               .collection("mobile_tokens")
-              .where(admin.firestore.FieldPath.documentId(),
-                  "in", usersToNotify)
+              .where(
+                  admin.firestore.FieldPath.documentId(),
+                  "in",
+                  usersToNotify,
+              )
               .get();
           const tokens = tokensSnapshot.docs.map((doc) => doc.data().token);
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,7 @@ import 'package:heyoo/services/firebase/storage_service.dart';
 import 'package:heyoo/widgets/phone_text_field.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 import 'package:heyoo/widgets/text_field_builder.dart';
+import 'package:intl/intl.dart';
 
 class Niyani extends StatefulWidget {
   const Niyani({super.key});
@@ -92,7 +94,7 @@ class _NiyaniState extends State<Niyani> {
   Future<void> _saveAnswersToFirestore() async {
     try {
       // Create a map for the answers
-      Map<String, String> data = {};
+      Map<String, dynamic> data = {};
 
       // Collect answers from the first page
       for (int i = 0; i < _firstPageControllers.length; i++) {
@@ -102,8 +104,14 @@ class _NiyaniState extends State<Niyani> {
 
       // Collect answers from the second page
       for (int i = 0; i < _secondPageControllers.length; i++) {
-        data[_appConstants.niyaniSecondPageQuestions[i]] =
-            _secondPageControllers[i].text;
+        if (_appConstants.niyaniSecondPageQuestions[i] == "Date of Birth  ") {
+          // Convert DOB to Timestamp
+          DateTime dob = DateFormat('dd/MM/yyyy').parse(_secondPageControllers[i].text);
+          data[_appConstants.niyaniSecondPageQuestions[i]] = Timestamp.fromDate(dob);
+        } else {
+          data[_appConstants.niyaniSecondPageQuestions[i]] =
+              _secondPageControllers[i].text;
+        }
       }
 
       // Collect answers from the third page
@@ -112,11 +120,17 @@ class _NiyaniState extends State<Niyani> {
             _thirdPageControllers[i].text;
       }
 
-      // Collect answers from the fourth page and save them in a separate map
-      for (int i = 0; i < _fourthPageControllers.length; i++) {
-        data[_appConstants.niyaniFourthPageQuestions[i]] =
-            _fourthPageControllers[i].text;
+           for (int i = 0; i < _fourthPageControllers.length; i++) {
+        if (_appConstants.niyaniFourthPageQuestions[i] ==  "Marriage Date") {
+          // Convert Marriage Date to Timestamp
+          DateTime marriageDate = DateFormat('dd/MM/yyyy').parse(_fourthPageControllers[i].text);
+          data[_appConstants.niyaniFourthPageQuestions[i]] = Timestamp.fromDate(marriageDate);
+        } else {
+          data[_appConstants.niyaniFourthPageQuestions[i]] =
+              _fourthPageControllers[i].text;
+        }
       }
+
 
       String? storageUrl;
       if (_image == null) {
