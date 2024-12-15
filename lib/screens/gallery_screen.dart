@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/models/carousel_model.dart';
 import 'package:heyoo/screens/gallery_view.dart';
 
@@ -25,7 +26,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gallery'),
+        title: Text(getTranslated(context, 'gallery')),
         centerTitle: true,
       ),
       body: FutureBuilder<List<CarouselModel>>(

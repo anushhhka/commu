@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.8
   cloud_firestore: ^5.4.4
   firebase_auth: ^5.3.0
@@ -50,6 +52,7 @@ dependencies:
   timeago: ^3.6.0
   photo_view: ^0.15.0
   video_player: ^2.7.2
+  shared_preferences: ^2.3.3
   uuid: ^4.5.1
 
 dev_dependencies:
@@ -79,6 +82,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/png/
+    - lib/lang/en.json
+    - lib/lang/hi.json
+    - lib/lang/gu.json
     - images/1.png
     - images/da.png
     - images/NA.jpg

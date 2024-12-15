@@ -1,0 +1,27 @@
+{
+  "welcome_back": "वापसी पर स्वागत है!",
+  "send_otp": "ओटीपी भेजें",
+  "create_account": "नया खाता बनाएं",
+  "enter_phone": "अपना फोन नंबर दर्ज करें",
+  "valid_phone": "कृपया एक मान्य फोन नंबर दर्ज करें",
+  "phone_required": "कृपया अपना फोन नंबर दर्ज करें",
+
+  "welcome_sign_up_as": "स्वागत है! साइन अप करें के रूप में:",
+  "village_member": "गांव सदस्य",
+  "niyani": "नियानी",
+
+  "enter_otp_text": "अपने फोन नंबर पर भेजा गया OTP दर्ज करें",
+  "verify_button": "सत्यापित करें",
+
+  "my_profile": "मेरा प्रोफाइल",
+  "niyani_address_book": "नियानी पता पुस्तक",
+  "change_language": "भाषा बदलें",
+  "logout": "लॉगआउट",
+  "select_language": "भाषा चुनें",
+
+  "announcements": "घोषणाएं",
+  "notifications": "सूचनाएं",
+  "gallery": "गैलरी",
+
+  "nana_asambia": "नाना आसांबिया"
+}

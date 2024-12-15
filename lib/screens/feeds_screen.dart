@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/models/feeds_model.dart';
 import 'package:heyoo/screens/profile/profile_screen.dart';
 import 'package:heyoo/widgets/carousel_slider.dart';
@@ -13,23 +14,17 @@ class FeedsScreen extends StatefulWidget {
 }
 
 class _FeedsScreenState extends State<FeedsScreen> {
-  List<FeedsModel> feedslList = [];
-  bool isLoaded = false;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  @override
-  void initState() {
-    fetchFeeds();
-    super.initState();
-  }
-
-  fetchFeeds() async {
+  // Function to fetch feeds from Firestore
+  Future<List<FeedsModel>> fetchFeeds() async {
     var feeds = await FirebaseFirestore.instance.collection('feeds').get();
-    mapRecords(feeds);
+    return mapRecords(feeds);
   }
 
-  mapRecords(QuerySnapshot<Map<String, dynamic>> records) {
-    var list = records.docs
+  // Method to map the records from Firestore to FeedsModel
+  List<FeedsModel> mapRecords(QuerySnapshot<Map<String, dynamic>> records) {
+    return records.docs
         .map(
           (item) => FeedsModel(
               text: item.data().containsKey('text') ? item['text'] : null,
@@ -39,10 +34,6 @@ class _FeedsScreenState extends State<FeedsScreen> {
                   : null),
         )
         .toList();
-    setState(() {
-      isLoaded = true;
-      feedslList = list;
-    });
   }
 
   @override
@@ -50,7 +41,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: const Text('Nana Asambia'),
+        title: Text(getTranslated(context, 'nana_asambia')),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.menu),
@@ -63,12 +54,21 @@ class _FeedsScreenState extends State<FeedsScreen> {
         child: ProfileScreen(),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const CarouselSlider(),
-            !isLoaded
-                ? const Center(child: CircularProgressIndicator())
-                : Expanded(
+        child: FutureBuilder<List<FeedsModel>>(
+          future: fetchFeeds(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('No Feeds Available'));
+            } else {
+              var feedslList = snapshot.data!;
+              return Column(
+                children: [
+                  const CarouselSlider(),
+                  Expanded(
                     child: ListView.builder(
                       itemCount: feedslList.length,
                       itemBuilder: (context, index) {
@@ -80,7 +80,10 @@ class _FeedsScreenState extends State<FeedsScreen> {
                       },
                     ),
                   ),
-          ],
+                ],
+              );
+            }
+          },
         ),
       ),
     );

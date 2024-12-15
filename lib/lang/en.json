@@ -1,0 +1,27 @@
+{
+  "welcome_back": "Welcome Back!",
+  "send_otp": "Send OTP",
+  "create_account": "Create New Account",
+  "enter_phone": "Enter your phone number",
+  "valid_phone": "Please enter a valid phone number",
+  "phone_required": "Please enter your phone number",
+
+  "welcome_sign_up_as": "Welcome! Sign Up as:",
+  "village_member": "Village Member",
+  "niyani": "Niyani",
+
+  "enter_otp_text": "Enter the OTP sent to your phone number",
+  "verify_button": "Verify",
+
+  "my_profile": "My Profile",
+  "niyani_address_book": "Niyani Address Book",
+  "change_language": "Change Language",
+  "logout": "Logout",
+  "select_language": "Select Language",
+
+  "announcements": "Announcements",
+  "notifications": "Notifications",
+  "gallery": "Gallery",
+
+  "nana_asambia": "Nana Asambia"
+}

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heyoo/config/themes/typograph.dart';
+import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/models/base_item_model.dart';
 import 'package:heyoo/screens/main/main_screen.dart';
 import 'package:heyoo/services/firebase/login_service.dart';
@@ -29,14 +30,14 @@ class _OTPScreenState extends State<OTPScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Enter the OTP sent to your phone number',
+                getTranslated(context, 'enter_otp_text'),
                 style: Typo.titleMedium,
               ),
               const SizedBox(height: 20),
               OTPTextFieldWidget(controller: _otpController),
               const SizedBox(height: 20),
               PrimaryElevatedButton(
-                buttonText: 'Verify',
+                buttonText: getTranslated(context, 'verify_button'),
                 onPressed: !_isLoading
                     ? () async {
                         setState(() {

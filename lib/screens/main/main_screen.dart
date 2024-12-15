@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
+import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/screens/announcement_screen.dart';
 import 'package:heyoo/screens/feeds_screen.dart';
 import 'package:heyoo/screens/gallery_screen.dart';
@@ -58,12 +59,16 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.campaign), label: 'Announcements'),
+              icon: const Icon(Icons.campaign),
+              label: getTranslated(context, 'announcements')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notifications'),
-          BottomNavigationBarItem(icon: Icon(Icons.photo), label: 'Gallery'),
+              icon: const Icon(Icons.notifications),
+              label: getTranslated(context, 'notifications')),
+          BottomNavigationBarItem(
+              icon: const Icon(Icons.photo),
+              label: getTranslated(context, 'gallery')),
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {

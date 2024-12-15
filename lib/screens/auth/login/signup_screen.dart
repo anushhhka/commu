@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heyoo/config/themes/typograph.dart';
+import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/screens/auth/signup/niyani.dart';
 import 'package:heyoo/screens/auth/signup/village_member.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
@@ -19,10 +20,11 @@ class SignUpScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Welcome! Sign Up as:', style: Typo.headlineSmall),
+                  Text(getTranslated(context, 'welcome_sign_up_as'),
+                      style: Typo.headlineSmall),
                   SizedBox(height: size.height * 0.03),
                   PrimaryElevatedButton(
-                      buttonText: "Village Member",
+                      buttonText: getTranslated(context, 'village_member'),
                       onPressed: () {
                         Navigator.push(
                             context,
@@ -31,7 +33,7 @@ class SignUpScreen extends StatelessWidget {
                       }),
                   SizedBox(height: size.height * 0.03),
                   PrimaryElevatedButton(
-                    buttonText: "Niyani",
+                    buttonText: getTranslated(context, 'niyani'),
                     buttonBackgroundColor: Colors.transparent,
                     onPressed: () {
                       Navigator.push(
