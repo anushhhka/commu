@@ -33,6 +33,8 @@ class NiyaniAddressBook extends StatelessWidget {
             itemCount: users.length,
             itemBuilder: (context, index) {
               final user = users[index];
+              print(user.toString());
+
               return ListTile(
                 leading: Container(
                   width: 60,
@@ -46,9 +48,12 @@ class NiyaniAddressBook extends StatelessWidget {
                     ),
                   ),
                   child: user.profileImage != null
-                      ? Image.network(user.profileImage!,errorBuilder: (context, error, stackTrace) {
-                        return const Icon(Icons.person);
-                      },)
+                      ? Image.network(
+                          user.profileImage!,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.person);
+                          },
+                        )
                       : const Icon(Icons.person),
                 ),
                 title: Text(

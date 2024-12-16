@@ -71,6 +71,7 @@ class _CarouselSliderState extends State<CarouselSlider> {
                 aspectRatio: 16 / 9,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: true,
+                autoPlayInterval: const Duration(seconds: 10),
                 autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 viewportFraction: 1.95,
               ),

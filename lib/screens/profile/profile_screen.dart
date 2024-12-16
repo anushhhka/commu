@@ -5,6 +5,7 @@ import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/main.dart';
 import 'package:heyoo/models/base_item_model.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
+import 'package:heyoo/screens/contact_screen.dart';
 import 'package:heyoo/screens/profile/niyani_address_book.dart';
 import 'package:heyoo/screens/profile/individual_profile_screen.dart';
 import 'package:heyoo/services/firebase/profile_service.dart';
@@ -126,6 +127,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const NiyaniAddressBook(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              PrimaryElevatedButton(
+                buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.zero,
+                buttonBorderColor: AppColors.white,
+                buttonText: getTranslated(context, 'contact_book'),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ContactAddress(),
                     ),
                   );
                 },
