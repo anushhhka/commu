@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:heyoo/models/niyani_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:heyoo/config/themes/app_colors.dart';
@@ -93,44 +94,67 @@ class _NiyaniState extends State<Niyani> {
 
   Future<void> _saveAnswersToFirestore() async {
     try {
-      // Create a map for the answers
-      Map<String, dynamic> data = {};
-
-      // Collect answers from the first page
-      for (int i = 0; i < _firstPageControllers.length; i++) {
-        data[_appConstants.niyaniFirstPageQuestions[i]] =
-            _firstPageControllers[i].text;
+      Timestamp dob = Timestamp.now();
+      Timestamp marriageDate = Timestamp.now();
+      if (_appConstants.niyaniFourthPageQuestions[2] == "Marriage Date") {
+        // Convert Marriage Date to Timestamp
+        DateTime parsedMarriageDate =
+            DateFormat('dd/MM/yyyy').parse(_fourthPageControllers[2].text);
+        marriageDate = Timestamp.fromDate(parsedMarriageDate);
+      } else if (_appConstants.niyaniSecondPageQuestions[0] ==
+          "Date of Birth  ") {
+        DateTime parsedBirthDate =
+            DateFormat('dd/MM/yyyy').parse(_secondPageControllers[0].text);
+        dob = Timestamp.fromDate(parsedBirthDate);
       }
 
-      // Collect answers from the second page
-      for (int i = 0; i < _secondPageControllers.length; i++) {
-        if (_appConstants.niyaniSecondPageQuestions[i] == "Date of Birth  ") {
-          // Convert DOB to Timestamp
-          DateTime dob = DateFormat('dd/MM/yyyy').parse(_secondPageControllers[i].text);
-          data[_appConstants.niyaniSecondPageQuestions[i]] = Timestamp.fromDate(dob);
-        } else {
-          data[_appConstants.niyaniSecondPageQuestions[i]] =
-              _secondPageControllers[i].text;
-        }
-      }
+      // Extract values from controllers
+      String email = _firstPageControllers[0].text;
+      String fullNameOfMarriedDaughter = _firstPageControllers[1].text;
+      String villageName = _firstPageControllers[2].text;
+      String fullNameOfMavitra = _firstPageControllers[3].text;
 
-      // Collect answers from the third page
-      for (int i = 0; i < _thirdPageControllers.length; i++) {
-        data[_appConstants.niyaniThirdPageQuestions[i]] =
-            _thirdPageControllers[i].text;
-      }
+      String education = _secondPageControllers[1].text;
+      String bloodGroup = _secondPageControllers[2].text;
+      String mobileNumber = _secondPageControllers[3].text;
+      String additionalNumber = _secondPageControllers[4].text;
+      String hobbies = _secondPageControllers[5].text;
 
-           for (int i = 0; i < _fourthPageControllers.length; i++) {
-        if (_appConstants.niyaniFourthPageQuestions[i] ==  "Marriage Date") {
-          // Convert Marriage Date to Timestamp
-          DateTime marriageDate = DateFormat('dd/MM/yyyy').parse(_fourthPageControllers[i].text);
-          data[_appConstants.niyaniFourthPageQuestions[i]] = Timestamp.fromDate(marriageDate);
-        } else {
-          data[_appConstants.niyaniFourthPageQuestions[i]] =
-              _fourthPageControllers[i].text;
-        }
-      }
+      String residentialAddress = _thirdPageControllers[0].text;
+      String state = _thirdPageControllers[1].text;
+      int pinCode = int.tryParse(_thirdPageControllers[2].text) ?? 0;
+      String city = _thirdPageControllers[3].text;
 
+      String activityOrEmployeeStatus = _fourthPageControllers[0].text;
+      String businessOrOfficeAddress = _fourthPageControllers[1].text;
+      String maritalStatus = _fourthPageControllers[3].text;
+      int totalFamilyMembers =
+          int.tryParse(_fourthPageControllers[4].text) ?? 0;
+
+      NiyaniModel details = NiyaniModel(
+        isVerified: false,
+        isAdmin: false,
+        email: email,
+        fullNameOfTheMarriedDaughter: fullNameOfMarriedDaughter,
+        villageName: villageName,
+        fullNameOfMavitra: fullNameOfMavitra,
+        dateOfBirth: dob,
+        education: education,
+        bloodGroup: bloodGroup,
+        mobileOrWhatsappNumber: int.tryParse(mobileNumber) ?? 0,
+        additionalNumber: int.tryParse(additionalNumber) ?? 0,
+        hobbies: hobbies,
+        residentialAddress: residentialAddress,
+        state: state,
+        pinCode: int.tryParse(pinCode.toString()) ?? 0,
+        city: city,
+        activityOrEmployeeStatus: activityOrEmployeeStatus,
+        officeAddress: businessOrOfficeAddress,
+        marriageDate: marriageDate,
+        maritalStatus: maritalStatus,
+        totalNumberOfFamilyMembers: totalFamilyMembers,
+        timestamp: Timestamp.now(),
+      );
 
       String? storageUrl;
       if (_image == null) {
@@ -143,7 +167,7 @@ class _NiyaniState extends State<Niyani> {
       // Save answers using the service
       bool response = await FirebaseSignUpService().saveNiyaniDetails(
         userId: _phoneNumberController.text,
-        data: data,
+        data: details,
         imagePath: storageUrl,
       );
 

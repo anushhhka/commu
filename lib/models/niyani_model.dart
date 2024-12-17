@@ -1,121 +1,124 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:heyoo/constants/app_constants.dart';
-import 'package:intl/intl.dart';
 
 class NiyaniModel {
-  bool isVillageMember;
-  final String? profileImage;
-  final String email;
-  final String fullNameOfMarriedDaughter;
-  final String villageName;
-  final String fullNameOfMavitra;
-  final String dateOfBirth;
-  final String education;
-  final String bloodGroup;
-  final String mobileNumber;
-  final String additionalNumber;
-  final String hobbies;
-  final String residentialAddress;
-  final String state;
-  final int pinCode;
-  final String city;
-  final String activityOrEmployeeStatus;
-  final String businessOrOfficeAddress;
-  final String marriageDate;
-  final String maritalStatus;
-  final int totalFamilyMembers;
+  String activityOrEmployeeStatus;
+  int? additionalNumber;
+  String bloodGroup;
+  String? city;
+  Timestamp? dateOfBirth;
+  String education;
+  String email;
+  String? emailAddress;
+  String fullNameOfMavitra;
+  String fullNameOfTheMarriedDaughter;
+  String hobbies;
+  String? imagePath;
+  bool isAdmin;
+  bool isVerified;
+  String? maritalStatus;
+  Timestamp? marriageDate;
+  int mobileOrWhatsappNumber;
+  String? officeAddress;
+  int pinCode;
+  String residentialAddress;
+  String state;
+  Timestamp timestamp;
+  int totalNumberOfFamilyMembers;
+  String villageName;
 
   NiyaniModel({
-    this.isVillageMember = false,
-    this.profileImage,
-    required this.email,
-    required this.fullNameOfMarriedDaughter,
-    required this.villageName,
-    required this.fullNameOfMavitra,
-    required this.dateOfBirth,
-    required this.education,
+    required this.activityOrEmployeeStatus,
+    this.additionalNumber,
     required this.bloodGroup,
-    required this.mobileNumber,
-    required this.additionalNumber,
+    this.city,
+    this.dateOfBirth,
+    required this.education,
+    required this.email,
+    this.emailAddress,
+    required this.fullNameOfMavitra,
+    required this.fullNameOfTheMarriedDaughter,
     required this.hobbies,
+    this.imagePath,
+    required this.isAdmin,
+    required this.isVerified,
+    this.maritalStatus,
+    this.marriageDate,
+    required this.mobileOrWhatsappNumber,
+    this.officeAddress,
+    required this.pinCode,
     required this.residentialAddress,
     required this.state,
-    required this.pinCode,
-    required this.city,
-    required this.activityOrEmployeeStatus,
-    required this.businessOrOfficeAddress,
-    required this.marriageDate,
-    required this.maritalStatus,
-    required this.totalFamilyMembers,
+    required this.timestamp,
+    required this.totalNumberOfFamilyMembers,
+    required this.villageName,
   });
 
-  factory NiyaniModel.fromJson(Map<String, dynamic> json) {
-    final constants = AppConstants();
-    final details = json['details'] as Map<String, dynamic>? ?? {};
+factory NiyaniModel.fromJson(Map<String, dynamic> json) {
+  return NiyaniModel(
+    activityOrEmployeeStatus: json['activityOrEmployeeStatus']?.toString() ?? '',
+    additionalNumber: json['additionalNumber'] != null
+        ? int.tryParse(json['additionalNumber'].toString())
+        : null,
+    bloodGroup: json['bloodGroup']?.toString() ?? '',
+    city: json['city']?.toString(),
+    dateOfBirth: json['dateOfBirth'] != null
+        ? (json['dateOfBirth'] as Timestamp)
+        : null,
+    education: json['education']?.toString() ?? '',
+    email: json['email']?.toString() ?? '',
+    emailAddress: json['emailAddress']?.toString(),
+    fullNameOfMavitra: json['fullNameOfMavitra']?.toString() ?? '',
+    fullNameOfTheMarriedDaughter:
+        json['fullNameOfTheMarriedDaughter']?.toString() ?? '',
+    hobbies: json['hobbies']?.toString() ?? '',
+    imagePath: json['image_path']?.toString(),
+    isAdmin: json['isAdmin'] as bool? ?? false,
+    isVerified: json['isVerified'] as bool? ?? false,
+    maritalStatus: json['maritalStatus']?.toString(),
+    marriageDate: json['marriageDate'] != null
+        ? (json['marriageDate'] as Timestamp)
+        : null,
+    mobileOrWhatsappNumber: int.tryParse(json['mobileOrWhatsappNumber'].toString()) ?? 0,
+    officeAddress: json['officeAddress']?.toString(),
+    pinCode: int.tryParse(json['pinCode'].toString()) ?? 0,
+    residentialAddress: json['residentialAddress']?.toString() ?? '',
+    state: json['state']?.toString() ?? '',
+    timestamp: json['timestamp'] as Timestamp,
+    totalNumberOfFamilyMembers: json['totalNumberOfFamilyMembers'] is int
+        ? json['totalNumberOfFamilyMembers'] as int
+        : int.tryParse(json['totalNumberOfFamilyMembers'].toString()) ?? 0,
+    villageName: json['villageName']?.toString() ?? '',
+  );
+}
 
-    return NiyaniModel(
-      isVillageMember: json['isVillageMember'] ?? false,
-      profileImage: json['image_path'] != null ? json['image_path'] as String : null,
-      email: details[constants.niyaniFirstPageQuestions[0]]?.toString() ?? '',
-      fullNameOfMarriedDaughter:
-          details[constants.niyaniFirstPageQuestions[1]]?.toString() ?? '',
-      villageName: details[constants.niyaniFirstPageQuestions[2]]?.toString() ?? '',
-      fullNameOfMavitra: details[constants.niyaniFirstPageQuestions[3]]?.toString() ?? '',
-      dateOfBirth: details[constants.niyaniSecondPageQuestions[0]] is Timestamp
-          ? DateFormat('MMMM dd, yyyy').format((details[constants.niyaniSecondPageQuestions[0]] as Timestamp).toDate())
-          : details[constants.niyaniSecondPageQuestions[0]]?.toString() ?? '',
-      education: details[constants.niyaniSecondPageQuestions[1]]?.toString() ?? '',
-      bloodGroup: details[constants.niyaniSecondPageQuestions[2]]?.toString() ?? '',
-      mobileNumber: details[constants.niyaniSecondPageQuestions[3]]?.toString() ?? '',
-      additionalNumber: details[constants.niyaniSecondPageQuestions[4]]?.toString() ?? '',
-      hobbies: details[constants.niyaniSecondPageQuestions[5]]?.toString() ?? '',
-      residentialAddress: details[constants.niyaniThirdPageQuestions[0]]?.toString() ?? '',
-      state: details[constants.niyaniThirdPageQuestions[1]]?.toString() ?? '',
-      pinCode: int.tryParse(details[constants.niyaniThirdPageQuestions[2]].toString()) ?? 0,
-      city: details[constants.niyaniThirdPageQuestions[3]]?.toString() ?? '',
-      activityOrEmployeeStatus:
-          details[constants.niyaniFourthPageQuestions[0]]?.toString() ?? '',
-      businessOrOfficeAddress:
-          details[constants.niyaniFourthPageQuestions[1]]?.toString() ?? '',
-      marriageDate: details[constants.niyaniFourthPageQuestions[2]] is Timestamp
-          ? DateFormat('MMMM dd, yyyy').format((details[constants.niyaniFourthPageQuestions[2]] as Timestamp).toDate())
-          : details[constants.niyaniFourthPageQuestions[2]]?.toString() ?? '',
-      maritalStatus: details[constants.niyaniFourthPageQuestions[3]]?.toString() ?? '',
-      totalFamilyMembers: int.tryParse(
-              details[constants.niyaniFourthPageQuestions[4]].toString()) ?? 0,
-    );
-  }
+
 
   Map<String, dynamic> toJson() {
     return {
-      'isVillageMember': isVillageMember,
-      'imagePath': profileImage,
-      'details': {
-        'email': email,
-        'fullNameOfMarriedDaughter': fullNameOfMarriedDaughter,
-        'villageName': villageName,
-        'fullNameOfMavitra': fullNameOfMavitra,
-        'dateOfBirth': dateOfBirth,
-        'education': education,
-        'bloodGroup': bloodGroup,
-        'mobileNumber': mobileNumber,
-        'additionalNumber': additionalNumber,
-        'hobbies': hobbies,
-        'residentialAddress': residentialAddress,
-        'state': state,
-        'pinCode': pinCode,
-        'city': city,
-        'activityOrEmployeeStatus': activityOrEmployeeStatus,
-        'businessOrOfficeAddress': businessOrOfficeAddress,
-        'marriageDate': marriageDate,
-        'maritalStatus': maritalStatus,
-        'totalFamilyMembers': totalFamilyMembers,
-      },
+      'activityOrEmployeeStatus': activityOrEmployeeStatus,
+      'additionalNumber': additionalNumber,
+      'bloodGroup': bloodGroup,
+      'city': city,
+      'dateOfBirth': dateOfBirth,
+      'education': education,
+      'email': email,
+      'emailAddress': emailAddress,
+      'fullNameOfMavitra': fullNameOfMavitra,
+      'fullNameOfTheMarriedDaughter': fullNameOfTheMarriedDaughter,
+      'hobbies': hobbies,
+      'image_path': imagePath,
+      'isAdmin': isAdmin,
+      'isVerified': isVerified,
+      'maritalStatus': maritalStatus,
+      'marriageDate': marriageDate,
+      'mobileOrWhatsappNumber': mobileOrWhatsappNumber,
+      'officeAddress': officeAddress,
+      'pinCode': pinCode,
+      'residentialAddress': residentialAddress,
+      'state': state,
+      'timestamp': timestamp,
+      'totalNumberOfFamilyMembers': totalNumberOfFamilyMembers,
+      'villageName': villageName,
     };
-  }
-
-  @override
-  String toString() {
-    return 'NiyaniModel{isVillageMember: $isVillageMember, email: $email, fullNameOfMarriedDaughter: $fullNameOfMarriedDaughter, villageName: $villageName, fullNameOfMavitra: $fullNameOfMavitra, dateOfBirth: $dateOfBirth, education: $education, bloodGroup: $bloodGroup, mobileNumber: $mobileNumber, additionalNumber: $additionalNumber, hobbies: $hobbies, residentialAddress: $residentialAddress, state: $state, pinCode: $pinCode, city: $city, activityOrEmployeeStatus: $activityOrEmployeeStatus, businessOrOfficeAddress: $businessOrOfficeAddress, marriageDate: $marriageDate, maritalStatus: $maritalStatus, totalFamilyMembers: $totalFamilyMembers}';
   }
 }

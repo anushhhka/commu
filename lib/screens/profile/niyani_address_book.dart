@@ -47,9 +47,9 @@ class NiyaniAddressBook extends StatelessWidget {
                       width: 2,
                     ),
                   ),
-                  child: user.profileImage != null
+                  child: user.imagePath != null
                       ? Image.network(
-                          user.profileImage!,
+                          user.imagePath!,
                           errorBuilder: (context, error, stackTrace) {
                             return const Icon(Icons.person);
                           },
@@ -57,11 +57,11 @@ class NiyaniAddressBook extends StatelessWidget {
                       : const Icon(Icons.person),
                 ),
                 title: Text(
-                  user.fullNameOfMarriedDaughter,
+                  user.fullNameOfTheMarriedDaughter,
                   style: Typo.titleLarge,
                 ),
                 subtitle: Text(
-                  user.mobileNumber,
+                  user.mobileOrWhatsappNumber.toString(),
                   style: Typo.titleLarge,
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios),
@@ -71,7 +71,7 @@ class NiyaniAddressBook extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => IndividualProfileScreen(
                         userProfile: user,
-                        phoneNumber: user.mobileNumber,
+                        phoneNumber: user.mobileOrWhatsappNumber.toString(),
                       ),
                     ),
                   );

@@ -4,6 +4,7 @@ import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/main.dart';
 import 'package:heyoo/models/base_item_model.dart';
+import 'package:heyoo/models/niyani_model.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/contact_screen.dart';
 import 'package:heyoo/screens/profile/niyani_address_book.dart';
@@ -64,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           }
 
-          final dynamic userProfile = snapshot.data!.data;
+          final NiyaniModel userProfile = snapshot.data!.data;
 
           return Column(
             children: <Widget>[
@@ -80,8 +81,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               CircleAvatar(
                 radius: 50,
-                child: userProfile.profileImage != null
-                    ? Image.network(userProfile.profileImage!)
+                child: userProfile.imagePath != null
+                    ? Image.network(userProfile.imagePath!)
                     : const Icon(Icons.person, size: 50),
               ),
               const SizedBox(height: 10),
@@ -93,9 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               Text(
-                userProfile.isVillageMember
-                    ? '${userProfile.firstName} ${userProfile.surname}'
-                    : userProfile.fullNameOfMarriedDaughter,
+                userProfile.fullNameOfTheMarriedDaughter,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 20,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:heyoo/models/base_item_model.dart';
+import 'package:heyoo/models/niyani_model.dart';
 
 class FirebaseSignUpService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -43,7 +44,7 @@ class FirebaseSignUpService {
 
   Future<bool> saveNiyaniDetails({
     required String userId, // mobile number
-    required Map<String, dynamic> data,
+    required NiyaniModel data,
     String? imagePath,
   }) async {
     try {
@@ -56,12 +57,7 @@ class FirebaseSignUpService {
 
       // Save answers to Firestore
       await userDocRef.set(
-        {
-          'details': data,
-          'image_path': imagePath,
-          'isVerified': false,
-          'isAdmin': false,
-        },
+        data.toJson(),
       );
 
       //  save phone number to the phone numbe collection
@@ -70,6 +66,7 @@ class FirebaseSignUpService {
       // Check if the document exists
       return await userDocRef.get().then((doc) => doc.exists);
     } on FirebaseException catch (e) {
+      print(e.toString());
       return false;
     } catch (e) {
       return false;

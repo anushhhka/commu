@@ -38,7 +38,6 @@ class FirebaseProfileService {
       if (niyaniDoc.exists) {
         NiyaniModel niyani =
             NiyaniModel.fromJson(niyaniDoc.data() as Map<String, dynamic>);
-        niyani.isVillageMember = false;
         return BaseItemModel(
           success: true,
           data: niyani,
@@ -68,7 +67,7 @@ class FirebaseProfileService {
           .map((doc) => NiyaniModel.fromJson(doc.data()))
           .toList();
 
-         print(niyaniList.length); 
+      print(niyaniList.length);
 
       return niyaniList;
     } catch (e) {
