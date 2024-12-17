@@ -1,151 +1,147 @@
-import 'package:heyoo/constants/app_constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class VillageMember {
-  bool isVillageMember;
-  final String? profileImage;
-  final String email;
-  final String firstName;
-  final String middleNameOrHusbandsName;
-  final String mothersName;
-  final String grandfathersNameOrFatherInLawsName;
-  final String grandmothersNameOrMotherInLawsName;
-  final String surname;
-  final String fullNameOfFamilyHead;
-  final String relationWithHeadOfFamily;
-  final String dateOfBirth;
-  final String education;
-  final String educationStatus;
-  final String bloodGroup;
-  final String mobileNumber;
-  final String additionalNumber;
-  final String hobbies;
-  final String residentialAddress;
-  final String state;
-  final String pinCode;
-  final String activityOrEmployeeStatus;
-  final String businessOrOfficeAddress;
-  final String maritalStatus;
-  final String marriageDate;
-  final String mavitraName;
-  final String mavitraVillageName;
-  final int totalFamilyMembers;
+class VillageMemberModel {
+  final String? activityOrEmployeeStatus;
+  final int? additionalNumber;
+  final String? bloodGroup;
+  final Timestamp? dateOfBirth;
+  final String? education;
+  final String? educationStatus;
+  final String? email;
+  final String? emailAddress;
+  final String? firstNameOfTheMember;
+  final String? fullNameOfMavitra;
+  final String? fullNameOfTheFamilyHead;
+  final String? grandMotherOrMotherInLawName;
+  final String? grandfatherOrFatherInLawName;
+  final String? hobbies;
+  final String? imagePath;
+  final bool? isAdmin;
+  final bool? isVerified;
+  final String? maritalStatus;
+  final Timestamp? marriageDate;
+  final String? middleNameFatherOrHusbandName;
+  final int? mobileOrWhatsappNumber;
+  final String? motherName;
+  final int? pinCode;
+  final String? relationWithHeadOfTheFamily;
+  final String? residentialAddress;
+  final String? state;
+  final String? surname;
+  final Timestamp? timestamp;
+  final int? totalNumberOfFamilyMembers;
+  final String? villageName;
 
-  VillageMember({
-    this.isVillageMember = true,
-    this.profileImage,
-    required this.email,
-    required this.firstName,
-    required this.middleNameOrHusbandsName,
-    required this.mothersName,
-    required this.grandfathersNameOrFatherInLawsName,
-    required this.grandmothersNameOrMotherInLawsName,
-    required this.surname,
-    required this.fullNameOfFamilyHead,
-    required this.relationWithHeadOfFamily,
-    required this.dateOfBirth,
-    required this.education,
-    required this.educationStatus,
-    required this.bloodGroup,
-    required this.mobileNumber,
-    required this.additionalNumber,
-    required this.hobbies,
-    required this.residentialAddress,
-    required this.state,
-    required this.pinCode,
-    required this.activityOrEmployeeStatus,
-    required this.businessOrOfficeAddress,
-    required this.maritalStatus,
-    required this.marriageDate,
-    required this.mavitraName,
-    required this.mavitraVillageName,
-    required this.totalFamilyMembers,
+  VillageMemberModel({
+    this.activityOrEmployeeStatus,
+    this.additionalNumber,
+    this.bloodGroup,
+    this.dateOfBirth,
+    this.education,
+    this.educationStatus,
+    this.email,
+    this.emailAddress,
+    this.firstNameOfTheMember,
+    this.fullNameOfMavitra,
+    this.fullNameOfTheFamilyHead,
+    this.grandMotherOrMotherInLawName,
+    this.grandfatherOrFatherInLawName,
+    this.hobbies,
+    this.imagePath,
+    this.isAdmin,
+    this.isVerified,
+    this.maritalStatus,
+    this.marriageDate,
+    this.middleNameFatherOrHusbandName,
+    this.mobileOrWhatsappNumber,
+    this.motherName,
+    this.pinCode,
+    this.relationWithHeadOfTheFamily,
+    this.residentialAddress,
+    this.state,
+    this.surname,
+    this.timestamp,
+    this.totalNumberOfFamilyMembers,
+    this.villageName,
   });
 
-  factory VillageMember.fromJson(Map<String, dynamic> json) {
-    final constants = AppConstants();
-    final details = json['details'] as Map<String, dynamic>? ?? {};
-
-    return VillageMember(
-      isVillageMember: true,
-      profileImage: json['image_path'],
-      email: details[constants.villageMemberFirstPageQuestions[0]] ?? '',
-      firstName: details[constants.villageMemberFirstPageQuestions[1]] ?? '',
-      middleNameOrHusbandsName:
-          details[constants.villageMemberFirstPageQuestions[2]] ?? '',
-      mothersName: details[constants.villageMemberFirstPageQuestions[3]] ?? '',
-      grandfathersNameOrFatherInLawsName:
-          details[constants.villageMemberSecondPageQuestions[0]] ?? '',
-      grandmothersNameOrMotherInLawsName:
-          details[constants.villageMemberSecondPageQuestions[1]] ?? '',
-      surname: details[constants.villageMemberSecondPageQuestions[2]] ?? '',
-      fullNameOfFamilyHead:
-          details[constants.villageMemberSecondPageQuestions[3]] ?? '',
-      relationWithHeadOfFamily:
-          details[constants.villageMemberSecondPageQuestions[4]] ?? '',
-      dateOfBirth: details[constants.villageMemberThirdPageQuestions[0]] ?? '',
-      education: details[constants.villageMemberThirdPageQuestions[1]] ?? '',
-      educationStatus:
-          details[constants.villageMemberThirdPageQuestions[2]] ?? '',
-      bloodGroup: details[constants.villageMemberThirdPageQuestions[3]] ?? '',
-      mobileNumber: details[constants.villageMemberThirdPageQuestions[4]] ?? '',
-      additionalNumber:
-          details[constants.villageMemberThirdPageQuestions[5]] ?? '',
-      hobbies: details[constants.villageMemberThirdPageQuestions[6]] ?? '',
-      residentialAddress:
-          details[constants.villageMemberFourthPageQuestions[0]] ?? '',
-      state: details[constants.villageMemberFourthPageQuestions[1]] ?? '',
-      pinCode: details[constants.villageMemberFourthPageQuestions[2]] ?? '',
-      activityOrEmployeeStatus:
-          details[constants.villageMemberFourthPageQuestions[3]] ?? '',
-      businessOrOfficeAddress:
-          details[constants.villageMemberFourthPageQuestions[4]] ?? '',
-      maritalStatus:
-          details[constants.villageMemberFifthPageQuestions[0]] ?? '',
-      marriageDate: details[constants.villageMemberFifthPageQuestions[1]] ?? '',
-      mavitraName: details[constants.villageMemberFifthPageQuestions[2]] ?? '',
-      mavitraVillageName:
-          details[constants.villageMemberFifthPageQuestions[3]] ?? '',
-      totalFamilyMembers: int.tryParse(
-              details[constants.villageMemberFifthPageQuestions[4]]
-                  .toString()) ??
-          0,
+  /// Factory constructor to parse data from Firestore or JSON.
+  factory VillageMemberModel.fromJson(Map<String, dynamic> json) {
+    return VillageMemberModel(
+      activityOrEmployeeStatus: json['activityOrEmployeeStatus']?.toString(),
+      additionalNumber: json['additionalNumber'] != null
+          ? (json['additionalNumber'] is int ? json['additionalNumber'] as int : int.tryParse(json['additionalNumber'].toString()))
+          : null,
+      bloodGroup: json['bloodGroup']?.toString(),
+      dateOfBirth: json['dateOfBirth'] as Timestamp?,
+      education: json['education']?.toString(),
+      educationStatus: json['educationStatus']?.toString(),
+      email: json['email']?.toString(),
+      emailAddress: json['emailAddress']?.toString(),
+      firstNameOfTheMember: json['firstNameOfTheMember']?.toString(),
+      fullNameOfMavitra: json['fullNameOfMavitra']?.toString(),
+      fullNameOfTheFamilyHead: json['fullNameOfTheFamilyHead']?.toString(),
+      grandMotherOrMotherInLawName: json['grandMotherOrMother-in-lawName']?.toString(),
+      grandfatherOrFatherInLawName: json['grandfatherOrFather-in-lawName']?.toString(),
+      hobbies: json['hobbies']?.toString(),
+      imagePath: json['image_path']?.toString(),
+      isAdmin: json['isAdmin'] as bool?,
+      isVerified: json['isVerified'] as bool?,
+      maritalStatus: json['maritalStatus']?.toString(),
+      marriageDate: json['marriageDate'] as Timestamp?,
+      middleNameFatherOrHusbandName: json['middleNameFatherOrHusbandName']?.toString(),
+      mobileOrWhatsappNumber: json['mobileOrWhatsappNumber'] != null
+          ? (json['mobileOrWhatsappNumber'] is int ? json['mobileOrWhatsappNumber'] as int : int.tryParse(json['mobileOrWhatsappNumber'].toString()))
+          : null,
+      motherName: json['motherName']?.toString(),
+      pinCode: json['pinCode'] != null ? (json['pinCode'] is int ? json['pinCode'] as int : int.tryParse(json['pinCode'].toString())) : null,
+      relationWithHeadOfTheFamily: json['relationWithHeadOfTheFamily']?.toString(),
+      residentialAddress: json['residentialAddress']?.toString(),
+      state: json['state']?.toString(),
+      surname: json['surname']?.toString(),
+      timestamp: json['timestamp'] as Timestamp?,
+      totalNumberOfFamilyMembers: json['totalNumberOfFamilyMembers'] != null
+          ? (json['totalNumberOfFamilyMembers'] is int
+              ? json['totalNumberOfFamilyMembers'] as int
+              : int.tryParse(json['totalNumberOfFamilyMembers'].toString()))
+          : null,
+      villageName: json['villageName']?.toString(),
     );
   }
 
+  // Method to convert the model to JSON format (useful for uploading data).
   Map<String, dynamic> toJson() {
     return {
-      'isVillageMember': isVillageMember,
-      'imagePath': profileImage,
-      'details': {
-        'email': email,
-        'firstName': firstName,
-        'middleNameOrHusbandsName': middleNameOrHusbandsName,
-        'mothersName': mothersName,
-        'grandfathersNameOrFatherInLawsName':
-            grandfathersNameOrFatherInLawsName,
-        'grandmothersNameOrMotherInLawsName':
-            grandmothersNameOrMotherInLawsName,
-        'surname': surname,
-        'fullNameOfFamilyHead': fullNameOfFamilyHead,
-        'relationWithHeadOfFamily': relationWithHeadOfFamily,
-        'dateOfBirth': dateOfBirth,
-        'education': education,
-        'educationStatus': educationStatus,
-        'bloodGroup': bloodGroup,
-        'mobileNumber': mobileNumber,
-        'additionalNumber': additionalNumber,
-        'hobbies': hobbies,
-        'residentialAddress': residentialAddress,
-        'state': state,
-        'pinCode': pinCode,
-        'activityOrEmployeeStatus': activityOrEmployeeStatus,
-        'businessOrOfficeAddress': businessOrOfficeAddress,
-        'maritalStatus': maritalStatus,
-        'marriageDate': marriageDate,
-        'mavitraName': mavitraName,
-        'mavitraVillageName': mavitraVillageName,
-        'totalFamilyMembers': totalFamilyMembers,
-      },
+      'activityOrEmployeeStatus': activityOrEmployeeStatus,
+      'additionalNumber': additionalNumber,
+      'bloodGroup': bloodGroup,
+      'dateOfBirth': dateOfBirth,
+      'education': education,
+      'educationStatus': educationStatus,
+      'email': email,
+      'emailAddress': emailAddress,
+      'firstNameOfTheMember': firstNameOfTheMember,
+      'fullNameOfMavitra': fullNameOfMavitra,
+      'fullNameOfTheFamilyHead': fullNameOfTheFamilyHead,
+      'grandMotherOrMother-in-lawName': grandMotherOrMotherInLawName,
+      'grandfatherOrFather-in-lawName': grandfatherOrFatherInLawName,
+      'hobbies': hobbies,
+      'image_path': imagePath,
+      'isAdmin': isAdmin,
+      'isVerified': isVerified,
+      'maritalStatus': maritalStatus,
+      'marriageDate': marriageDate,
+      'middleNameFatherOrHusbandName': middleNameFatherOrHusbandName,
+      'mobileOrWhatsappNumber': mobileOrWhatsappNumber,
+      'motherName': motherName,
+      // 'pinCode': pinCode,
+      'relationWithHeadOfTheFamily': relationWithHeadOfTheFamily,
+      'residentialAddress': residentialAddress,
+      'state': state,
+      'surname': surname,
+      'timestamp': timestamp,
+      'totalNumberOfFamilyMembers': totalNumberOfFamilyMembers,
+      'villageName': villageName,
     };
   }
 }

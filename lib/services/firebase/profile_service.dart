@@ -18,9 +18,8 @@ class FirebaseProfileService {
           .get();
 
       if (villageMemberDoc.exists) {
-        VillageMember villageMember = VillageMember.fromJson(
+        VillageMemberModel villageMember = VillageMemberModel.fromJson(
             villageMemberDoc.data() as Map<String, dynamic>);
-        villageMember.isVillageMember = true;
         return BaseItemModel(
           success: true,
           data: villageMember,
@@ -70,6 +69,28 @@ class FirebaseProfileService {
       print(niyaniList.length);
 
       return niyaniList;
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<VillageMemberModel>> fetchVillageMemberUsersDocument() async {
+    try {
+      // I want all the list of users
+      QuerySnapshot<Map<String, dynamic>> villageMemberDocs = await _firestore
+          .collection('users')
+          .doc('village_member')
+          .collection('user_details')
+          .get();
+
+      List<VillageMemberModel> villageMemberList = villageMemberDocs.docs
+          .map((doc) => VillageMemberModel.fromJson(doc.data()))
+          .toList();
+
+      print(villageMemberList.length);
+
+      return villageMemberList;
     } catch (e) {
       print(e.toString());
       return [];

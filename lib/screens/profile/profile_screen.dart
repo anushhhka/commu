@@ -9,6 +9,7 @@ import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/contact_screen.dart';
 import 'package:heyoo/screens/profile/niyani_address_book.dart';
 import 'package:heyoo/screens/profile/individual_profile_screen.dart';
+import 'package:heyoo/screens/profile/village_member_address_book.dart';
 import 'package:heyoo/services/firebase/profile_service.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -126,6 +127,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const NiyaniAddressBook(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              PrimaryElevatedButton(
+                buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.zero,
+                buttonBorderColor: AppColors.white,
+                buttonText: getTranslated(context, 'village_member_address_book'),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const VillageMemberAddressBook(),
                     ),
                   );
                 },
