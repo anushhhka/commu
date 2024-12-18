@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/main/main_screen.dart';
+import 'package:heyoo/screens/select_language.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -31,11 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToNextScreen() async {
-    await Future.delayed(
-        const Duration(seconds: 3)); // Show splash screen for 3 seconds
+    await Future.delayed(const Duration(seconds: 3)); // Show splash screen for 3 seconds
 
-    _authStateSubscription =
-        FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    _authStateSubscription = FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
         // User is signed in
         Navigator.pushReplacement(
@@ -46,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
         // User is not signed in
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => const SelectLanguage()),
         );
       }
     });

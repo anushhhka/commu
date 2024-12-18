@@ -15,11 +15,8 @@ class GalleryScreen extends StatefulWidget {
 
 class _GalleryScreenState extends State<GalleryScreen> {
   Future<List<CarouselModel>> fetchGalleryImages() async {
-    var carousels =
-        await FirebaseFirestore.instance.collection('gallery').get();
-    return carousels.docs
-        .map((item) => CarouselModel(image: item['image']))
-        .toList();
+    var carousels = await FirebaseFirestore.instance.collection('gallery').get();
+    return carousels.docs.map((item) => CarouselModel(image: item['image'])).toList();
   }
 
   @override
@@ -28,6 +25,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
       appBar: AppBar(
         title: Text(getTranslated(context, 'gallery')),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: FutureBuilder<List<CarouselModel>>(
         future: fetchGalleryImages(),
@@ -69,8 +67,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => GalleryView(
-                              mediaUrls:
-                                  galleryList.map((e) => e.image).toList(),
+                              mediaUrls: galleryList.map((e) => e.image).toList(),
                               initialIndex: index,
                             ),
                           ),
@@ -81,12 +78,9 @@ class _GalleryScreenState extends State<GalleryScreen> {
                         child: CachedNetworkImage(
                           imageUrl: galleryList[index].image,
                           fit: BoxFit.cover,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) => Center(
-                                  child: CircularProgressIndicator(
-                                      value: downloadProgress.progress)),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
                         ),
                       ),
                     );
