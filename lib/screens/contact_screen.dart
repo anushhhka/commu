@@ -14,8 +14,7 @@ class ContactAddress extends StatelessWidget {
   _openWhatsApp(String contactNumber) async {
     var contact = contactNumber;
     var androidUrl = "whatsapp://send?phone=$contact";
-    var iosUrl =
-        "https://wa.me/$contact?text=${Uri.parse('Hi, I need some help')}";
+    var iosUrl = "https://wa.me/$contact?text=${Uri.parse('Hi, I need some help')}";
 
     try {
       if (Platform.isIOS) {
@@ -32,7 +31,7 @@ class ContactAddress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(getTranslated(context, 'contact_book')),
+          title: Text(getTranslated(context, 'support')),
         ),
         body: Column(
           children: [
@@ -47,23 +46,19 @@ class ContactAddress extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Rajesh Chheda",
+                    "Rajesh Chheda - 9892455166",
                     style: Typo.titleLarge.copyWith(color: Colors.black),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   Row(
                     children: [
-                      const Icon(Icons.phone),
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
                           // Function to open phone dialer
                           launchUrl(Uri.parse("tel:+919892455166"));
                         },
-                        child: Text(
-                          "+91 98924 55166",
-                          style: Typo.titleMedium.copyWith(color: Colors.black),
-                        ),
+                        child: const Icon(Icons.phone),
                       ),
                       const SizedBox(width: 20),
                       GestureDetector(
@@ -92,24 +87,19 @@ class ContactAddress extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hetan Chheda",
+                    "Hetan Chheda - 9373973789",
                     style: Typo.titleLarge.copyWith(color: Colors.black),
                   ),
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(Icons.phone),
                       const SizedBox(width: 10),
                       GestureDetector(
-                        onTap: () {
-                          // Function to open phone dialer
-                          launchUrl(Uri.parse("tel:+919373973789"));
-                        },
-                        child: Text(
-                          "+91 9373973789",
-                          style: Typo.titleMedium.copyWith(color: Colors.black),
-                        ),
-                      ),
+                          onTap: () {
+                            // Function to open phone dialer
+                            launchUrl(Uri.parse("tel:+919373973789"));
+                          },
+                          child: Icon(Icons.phone)),
                       const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () {

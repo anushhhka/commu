@@ -68,166 +68,163 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           final NiyaniModel userProfile = snapshot.data!.data;
 
-          return Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon:
-                      const Icon(Icons.close, size: 30, color: AppColors.white),
-                ),
-              ),
-              CircleAvatar(
-                radius: 50,
-                child: userProfile.imagePath != null
-                    ? Image.network(userProfile.imagePath!)
-                    : const Icon(Icons.person, size: 50),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                FirebaseAuth.instance.currentUser!.phoneNumber!,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                userProfile.fullNameOfTheMarriedDaughter,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 20),
-              PrimaryElevatedButton(
-                buttonBackgroundColor: AppColors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.zero,
-                buttonBorderColor: AppColors.white,
-                buttonText: getTranslated(context, 'my_profile'),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => IndividualProfileScreen(
-                        userProfile: userProfile,
-                        phoneNumber:
-                            FirebaseAuth.instance.currentUser!.phoneNumber!),
-                  ));
-                },
-              ),
-              const SizedBox(height: 20),
-              PrimaryElevatedButton(
-                buttonBackgroundColor: AppColors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.zero,
-                buttonBorderColor: AppColors.white,
-                buttonText: getTranslated(context, 'niyani_address_book'),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const NiyaniAddressBook(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              PrimaryElevatedButton(
-                buttonBackgroundColor: AppColors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.zero,
-                buttonBorderColor: AppColors.white,
-                buttonText: getTranslated(context, 'village_member_address_book'),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const VillageMemberAddressBook(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              PrimaryElevatedButton(
-                buttonBackgroundColor: AppColors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.zero,
-                buttonBorderColor: AppColors.white,
-                buttonText: getTranslated(context, 'support'),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ContactAddress(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              PrimaryElevatedButton(
-                buttonBackgroundColor: AppColors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.zero,
-                buttonBorderColor: AppColors.white,
-                buttonText: getTranslated(context, 'change_language'),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(getTranslated(context, 'select_language')),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              title: const Text('English'),
-                              leading: Radio(
-                                value: 'en',
-                                groupValue: getLocale(),
-                                onChanged: (value) {
-                                  _changeLanguage('en');
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                            ListTile(
-                              title: const Text('हिंदी'),
-                              leading: Radio(
-                                value: 'hi',
-                                groupValue: getLocale(),
-                                onChanged: (value) {
-                                  _changeLanguage('hi');
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                            ListTile(
-                              title: const Text('ગુજરાતી'),
-                              leading: Radio(
-                                value: 'gu',
-                                groupValue: getLocale(),
-                                onChanged: (value) {
-                                  _changeLanguage('gu');
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+          return SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
                     },
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              PrimaryElevatedButton(
-                buttonText: getTranslated(context, 'logout'),
-                borderRadius: BorderRadius.zero,
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
-                    ),
-                  );
-                },
-              ),
-            ],
+                    icon: const Icon(Icons.close, size: 30, color: AppColors.white),
+                  ),
+                ),
+                CircleAvatar(
+                  radius: 50,
+                  child: userProfile.imagePath != null ? Image.network(userProfile.imagePath!) : const Icon(Icons.person, size: 50),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  FirebaseAuth.instance.currentUser!.phoneNumber!,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  userProfile.fullNameOfTheMarriedDaughter,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.zero,
+                  buttonBorderColor: AppColors.white,
+                  buttonText: getTranslated(context, 'my_profile'),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          IndividualProfileScreen(userProfile: userProfile, phoneNumber: FirebaseAuth.instance.currentUser!.phoneNumber!),
+                    ));
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.zero,
+                  buttonBorderColor: AppColors.white,
+                  buttonText: getTranslated(context, 'niyani_address_book'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const NiyaniAddressBook(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.zero,
+                  buttonBorderColor: AppColors.white,
+                  buttonText: getTranslated(context, 'village_member_address_book'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const VillageMemberAddressBook(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.zero,
+                  buttonBorderColor: AppColors.white,
+                  buttonText: getTranslated(context, 'support'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ContactAddress(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.zero,
+                  buttonBorderColor: AppColors.white,
+                  buttonText: getTranslated(context, 'change_language'),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(getTranslated(context, 'select_language')),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                title: const Text('English'),
+                                leading: Radio(
+                                  value: 'en',
+                                  groupValue: getLocale(),
+                                  onChanged: (value) {
+                                    _changeLanguage('en');
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                title: const Text('हिंदी'),
+                                leading: Radio(
+                                  value: 'hi',
+                                  groupValue: getLocale(),
+                                  onChanged: (value) {
+                                    _changeLanguage('hi');
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                title: const Text('ગુજરાતી'),
+                                leading: Radio(
+                                  value: 'gu',
+                                  groupValue: getLocale(),
+                                  onChanged: (value) {
+                                    _changeLanguage('gu');
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonText: getTranslated(context, 'logout'),
+                  borderRadius: BorderRadius.zero,
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           );
         },
       ),
