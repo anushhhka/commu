@@ -5,6 +5,8 @@
   "enter_phone": "Enter your phone number",
   "valid_phone": "Please enter a valid phone number",
   "phone_required": "Please enter your phone number",
+  "resend_otp_in": "Resend OTP in",
+  "resend_otp": "Resend OTP",
 
   "welcome_sign_up_as": "Welcome! Sign Up as:",
   "village_member": "Village Member",

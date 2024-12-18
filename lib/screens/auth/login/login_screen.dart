@@ -182,6 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       MaterialPageRoute(
                                         builder: (context) => OTPScreen(
                                           verificationId: response.data as String,
+                                          phoneNumber: phoneNumber,
                                         ),
                                       ),
                                     );
