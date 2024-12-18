@@ -20,11 +20,6 @@ class _SelectLanguageState extends State<SelectLanguage> {
     MyApp.setLocale(context, _locale); // Refresh the app with the new locale
   }
 
-  Future<String> _getCurrentLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(LAGUAGE_CODE) ?? 'en'; // Default to English
-  }
-
   String selectedLanguage = 'en';
 
   @override

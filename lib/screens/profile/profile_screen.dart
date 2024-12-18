@@ -150,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 buttonBackgroundColor: AppColors.white.withOpacity(0.1),
                 borderRadius: BorderRadius.zero,
                 buttonBorderColor: AppColors.white,
-                buttonText: getTranslated(context, 'contact_book'),
+                buttonText: getTranslated(context, 'support'),
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
