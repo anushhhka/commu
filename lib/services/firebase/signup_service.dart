@@ -1,33 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:heyoo/models/base_item_model.dart';
 import 'package:heyoo/models/niyani_model.dart';
+import 'package:heyoo/models/village_member_model.dart';
 
 class FirebaseSignUpService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<bool> saveVillageMembersDetails({
     required String userId, // mobile number
-    required Map<String, String> data,
-    required Map<String, String> documents,
+    required VillageMemberModel data,
     String? imagePath,
   }) async {
     try {
       // Reference to the user's document in the village_member_users collection
-      DocumentReference userDocRef = _firestore
-          .collection('users')
-          .doc('village_member')
-          .collection('user_details')
-          .doc(userId);
+      DocumentReference userDocRef = _firestore.collection('users').doc('village_member').collection('user_details').doc(userId);
 
       // Save answers to Firestore
       await userDocRef.set(
-        {
-          'details': data,
-          'image_path': imagePath,
-          'documents': documents,
-          'isVerified': false,
-          'isAdmin': false,
-        },
+        data.toJson(),
       );
 
       //  save phone number to the phone numbe collection
@@ -49,11 +39,7 @@ class FirebaseSignUpService {
   }) async {
     try {
       // Reference to the user's document in the village_member_users collection
-      DocumentReference userDocRef = _firestore
-          .collection('users')
-          .doc('niyani')
-          .collection('user_details')
-          .doc(userId);
+      DocumentReference userDocRef = _firestore.collection('users').doc('niyani').collection('user_details').doc(userId);
 
       // Save answers to Firestore
       await userDocRef.set(
@@ -76,8 +62,7 @@ class FirebaseSignUpService {
   // check if the user is already registered
   Future<BaseItemModel> isUserAleadyRegistered(String userId) async {
     try {
-      DocumentSnapshot doc =
-          await _firestore.collection('phone_numbers').doc(userId).get();
+      DocumentSnapshot doc = await _firestore.collection('phone_numbers').doc(userId).get();
       return BaseItemModel(success: doc.exists);
     } on FirebaseException catch (e) {
       return BaseItemModel(success: false, error: e.message);

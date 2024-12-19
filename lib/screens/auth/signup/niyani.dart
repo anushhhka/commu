@@ -78,18 +78,10 @@ class _NiyaniState extends State<Niyani> {
   @override
   void initState() {
     super.initState();
-    _firstPageControllers = List.generate(
-        _appConstants.niyaniFirstPageQuestions.length,
-        (_) => TextEditingController());
-    _secondPageControllers = List.generate(
-        _appConstants.niyaniSecondPageQuestions.length,
-        (_) => TextEditingController());
-    _thirdPageControllers = List.generate(
-        _appConstants.niyaniThirdPageQuestions.length,
-        (_) => TextEditingController());
-    _fourthPageControllers = List.generate(
-        _appConstants.niyaniFourthPageQuestions.length,
-        (_) => TextEditingController());
+    _firstPageControllers = List.generate(_appConstants.niyaniFirstPageQuestions.length, (_) => TextEditingController());
+    _secondPageControllers = List.generate(_appConstants.niyaniSecondPageQuestions.length, (_) => TextEditingController());
+    _thirdPageControllers = List.generate(_appConstants.niyaniThirdPageQuestions.length, (_) => TextEditingController());
+    _fourthPageControllers = List.generate(_appConstants.niyaniFourthPageQuestions.length, (_) => TextEditingController());
   }
 
   Future<void> _saveAnswersToFirestore() async {
@@ -98,14 +90,18 @@ class _NiyaniState extends State<Niyani> {
       Timestamp marriageDate = Timestamp.now();
       if (_appConstants.niyaniFourthPageQuestions[2] == "Marriage Date") {
         // Convert Marriage Date to Timestamp
-        DateTime parsedMarriageDate =
-            DateFormat('dd/MM/yyyy').parse(_fourthPageControllers[2].text);
+        DateTime parsedMarriageDate = DateFormat('dd/MM/yyyy').parse(_fourthPageControllers[2].text);
         marriageDate = Timestamp.fromDate(parsedMarriageDate);
-      } else if (_appConstants.niyaniSecondPageQuestions[0] ==
-          "Date of Birth  ") {
-        DateTime parsedBirthDate =
-            DateFormat('dd/MM/yyyy').parse(_secondPageControllers[0].text);
+      } else if (_appConstants.niyaniSecondPageQuestions[0] == "Date of Birth  ") {
+        DateTime parsedBirthDate = DateFormat('dd/MM/yyyy').parse(_secondPageControllers[0].text);
         dob = Timestamp.fromDate(parsedBirthDate);
+      }
+
+      String? storageUrl;
+      if (_image == null) {
+        storageUrl = null;
+      } else {
+        storageUrl = await FirebaseStorageService().uploadImage(_image!, _phoneNumberController.text);
       }
 
       // Extract values from controllers
@@ -128,8 +124,7 @@ class _NiyaniState extends State<Niyani> {
       String activityOrEmployeeStatus = _fourthPageControllers[0].text;
       String businessOrOfficeAddress = _fourthPageControllers[1].text;
       String maritalStatus = _fourthPageControllers[3].text;
-      int totalFamilyMembers =
-          int.tryParse(_fourthPageControllers[4].text) ?? 0;
+      int totalFamilyMembers = int.tryParse(_fourthPageControllers[4].text) ?? 0;
 
       NiyaniModel details = NiyaniModel(
         isVerified: false,
@@ -148,6 +143,7 @@ class _NiyaniState extends State<Niyani> {
         state: state,
         pinCode: int.tryParse(pinCode.toString()) ?? 0,
         city: city,
+        imagePath: storageUrl,
         activityOrEmployeeStatus: activityOrEmployeeStatus,
         officeAddress: businessOrOfficeAddress,
         marriageDate: marriageDate,
@@ -155,14 +151,6 @@ class _NiyaniState extends State<Niyani> {
         totalNumberOfFamilyMembers: totalFamilyMembers,
         timestamp: Timestamp.now(),
       );
-
-      String? storageUrl;
-      if (_image == null) {
-        storageUrl = null;
-      } else {
-        storageUrl = await FirebaseStorageService()
-            .uploadImage(_image!, _phoneNumberController.text);
-      }
 
       // Save answers using the service
       bool response = await FirebaseSignUpService().saveNiyaniDetails(
@@ -172,13 +160,11 @@ class _NiyaniState extends State<Niyani> {
       );
 
       if (response && mounted) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return const SuccessScreen();
         }));
       } else {
-        Fluttertoast.showToast(
-            msg: 'Failed to create account. Please try again.');
+        Fluttertoast.showToast(msg: 'Failed to create account. Please try again.');
       }
     } catch (e) {
       Fluttertoast.showToast(msg: 'An error occurred. Please try again.');
@@ -217,9 +203,7 @@ class _NiyaniState extends State<Niyani> {
                   color: Colors.grey[300],
                   shape: BoxShape.circle,
                 ),
-                child: _image != null
-                    ? Image.file(_image!)
-                    : Icon(Icons.person, color: Colors.grey[700], size: 50),
+                child: _image != null ? Image.file(_image!) : Icon(Icons.person, color: Colors.grey[700], size: 50),
               ),
             ),
             Expanded(
@@ -249,10 +233,7 @@ class _NiyaniState extends State<Niyani> {
                               return;
                             }
 
-                            BaseItemModel response =
-                                await FirebaseSignUpService()
-                                    .isUserAleadyRegistered(
-                                        _phoneNumberController.text);
+                            BaseItemModel response = await FirebaseSignUpService().isUserAleadyRegistered(_phoneNumberController.text);
 
                             if (response.success) {
                               Fluttertoast.showToast(
@@ -353,9 +334,7 @@ class _NiyaniState extends State<Niyani> {
                     margin: const EdgeInsets.symmetric(horizontal: 8.0),
                     padding: const EdgeInsets.all(12.0),
                     decoration: BoxDecoration(
-                      color: _currentPage == index
-                          ? AppColors.primary
-                          : Colors.grey,
+                      color: _currentPage == index ? AppColors.primary : Colors.grey,
                       shape: BoxShape.circle,
                     ),
                     child: Text(

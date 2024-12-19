@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/constants/app_constants.dart';
 import 'package:heyoo/models/base_item_model.dart';
+import 'package:heyoo/models/village_member_model.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/success_screen.dart';
 import 'package:heyoo/services/firebase/signup_service.dart';
@@ -12,6 +14,7 @@ import 'package:heyoo/widgets/phone_text_field.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 import 'package:heyoo/widgets/text_field_builder.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class VillageMember extends StatefulWidget {
   const VillageMember({super.key});
@@ -25,15 +28,7 @@ class _VillageMemberState extends State<VillageMember> {
   final ImagePicker _picker = ImagePicker();
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  final List<bool> _pageValidationStatus = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
+  final List<bool> _pageValidationStatus = [false, false, false, false, false, false, false];
   final TextEditingController _phoneNumberController = TextEditingController();
 
   final AppConstants _appConstants = AppConstants();
@@ -91,92 +86,80 @@ class _VillageMemberState extends State<VillageMember> {
   @override
   void initState() {
     super.initState();
-    _firstPageControllers = List.generate(
-        _appConstants.villageMemberFirstPageQuestions.length,
-        (_) => TextEditingController());
-    _secondPageControllers = List.generate(
-        _appConstants.villageMemberSecondPageQuestions.length,
-        (_) => TextEditingController());
-    _thirdPageControllers = List.generate(
-        _appConstants.villageMemberThirdPageQuestions.length,
-        (_) => TextEditingController());
-    _fourthPageControllers = List.generate(
-        _appConstants.villageMemberFourthPageQuestions.length,
-        (_) => TextEditingController());
-    _fifthPageControllers = List.generate(
-        _appConstants.villageMemberFifthPageQuestions.length,
-        (_) => TextEditingController());
-    _sixthPageControllers = List.generate(
-        _appConstants.villageMemberSixthPageQuestions.length,
-        (_) => TextEditingController());
+    _firstPageControllers = List.generate(_appConstants.villageMemberFirstPageQuestions.length, (_) => TextEditingController());
+    _secondPageControllers = List.generate(_appConstants.villageMemberSecondPageQuestions.length, (_) => TextEditingController());
+    _thirdPageControllers = List.generate(_appConstants.villageMemberThirdPageQuestions.length, (_) => TextEditingController());
+    _fourthPageControllers = List.generate(_appConstants.villageMemberFourthPageQuestions.length, (_) => TextEditingController());
+    _fifthPageControllers = List.generate(_appConstants.villageMemberFifthPageQuestions.length, (_) => TextEditingController());
+    _sixthPageControllers = List.generate(_appConstants.villageMemberSixthPageQuestions.length, (_) => TextEditingController());
   }
 
   Future<void> _saveAnswersToFirestore() async {
     try {
-      // Create a map for the answers
-      Map<String, String> data = {};
-      Map<String, String> documents = {};
-
-      // Collect answers from the first page
-      for (int i = 0; i < _firstPageControllers.length; i++) {
-        data[_appConstants.villageMemberFirstPageQuestions[i]] =
-            _firstPageControllers[i].text;
+      Timestamp dob = Timestamp.now();
+      Timestamp marriageDate = Timestamp.now();
+      if (_fifthPageControllers[1].text.isNotEmpty) {
+        // Convert Marriage Date to Timestamp
+        DateTime parsedMarriageDate = DateFormat('dd/MM/yyyy').parse(_fifthPageControllers[1].text);
+        marriageDate = Timestamp.fromDate(parsedMarriageDate);
       }
-
-      // Collect answers from the second page
-      for (int i = 0; i < _secondPageControllers.length; i++) {
-        data[_appConstants.villageMemberSecondPageQuestions[i]] =
-            _secondPageControllers[i].text;
-      }
-
-      // Collect answers from the third page
-      for (int i = 0; i < _thirdPageControllers.length; i++) {
-        data[_appConstants.villageMemberThirdPageQuestions[i]] =
-            _thirdPageControllers[i].text;
-      }
-
-      // Collect answers from the fourth page
-      for (int i = 0; i < _fourthPageControllers.length; i++) {
-        data[_appConstants.villageMemberFourthPageQuestions[i]] =
-            _fourthPageControllers[i].text;
-      }
-
-      // Collect answers from the fifth page
-      for (int i = 0; i < _fifthPageControllers.length; i++) {
-        data[_appConstants.villageMemberFifthPageQuestions[i]] =
-            _fifthPageControllers[i].text;
-      }
-
-      // Collect answers from the sixth page
-      for (int i = 0; i < _sixthPageControllers.length; i++) {
-        data[_appConstants.villageMemberSixthPageQuestions[i]] =
-            _sixthPageControllers[i].text;
+      if (_thirdPageControllers[0].text.isNotEmpty) {
+        DateTime parsedBirthDate = DateFormat('dd/MM/yyyy').parse(_thirdPageControllers[0].text);
+        dob = Timestamp.fromDate(parsedBirthDate);
       }
 
       String? storageUrl;
       if (_image == null) {
         storageUrl = null;
       } else {
-        storageUrl = await FirebaseStorageService()
-            .uploadImage(_image!, _phoneNumberController.text);
+        storageUrl = await FirebaseStorageService().uploadImage(_image!, _phoneNumberController.text);
       }
 
-      // Save answers using the service
+      VillageMemberModel villageMember = VillageMemberModel(
+        activityOrEmployeeStatus: _fourthPageControllers[3].text,
+        additionalNumber: int.tryParse(_thirdPageControllers[5].text),
+        bloodGroup: _thirdPageControllers[3].text,
+        dateOfBirth: dob,
+        education: _thirdPageControllers[1].text,
+        educationStatus: _thirdPageControllers[2].text,
+        email: _firstPageControllers[0].text,
+        emailAddress: _firstPageControllers[0].text,
+        firstNameOfTheMember: _firstPageControllers[1].text,
+        fullNameOfMavitra: _fifthPageControllers[2].text,
+        fullNameOfTheFamilyHead: _secondPageControllers[3].text,
+        grandMotherOrMotherInLawName: _secondPageControllers[1].text,
+        grandfatherOrFatherInLawName: _secondPageControllers[0].text,
+        hobbies: _thirdPageControllers[6].text,
+        imagePath: storageUrl,
+        isAdmin: false,
+        isVerified: false,
+        maritalStatus: _fifthPageControllers[0].text,
+        marriageDate: marriageDate,
+        middleNameFatherOrHusbandName: _firstPageControllers[2].text,
+        mobileOrWhatsappNumber: int.tryParse(_thirdPageControllers[4].text),
+        motherName: _firstPageControllers[3].text,
+        pinCode: int.tryParse(_fourthPageControllers[2].text),
+        relationWithHeadOfTheFamily: _secondPageControllers[4].text,
+        residentialAddress: _fourthPageControllers[0].text,
+        state: _fourthPageControllers[1].text,
+        surname: _secondPageControllers[2].text,
+        timestamp: Timestamp.now(),
+        totalNumberOfFamilyMembers: int.tryParse(_fifthPageControllers[4].text),
+        villageName: _fifthPageControllers[3].text,
+      );
+
       bool response = await FirebaseSignUpService().saveVillageMembersDetails(
         userId: _phoneNumberController.text,
-        data: data,
+        data: villageMember,
         imagePath: storageUrl,
-        documents: documents,
       );
 
       if (response && mounted) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return const SuccessScreen();
         }));
       } else {
-        Fluttertoast.showToast(
-            msg: 'Failed to create account. Please try again.');
+        Fluttertoast.showToast(msg: 'Failed to create account. Please try again.');
       }
     } catch (e) {
       Fluttertoast.showToast(msg: 'An error occurred. Please try again.');
@@ -214,9 +197,7 @@ class _VillageMemberState extends State<VillageMember> {
                   color: Colors.grey[300],
                   shape: BoxShape.circle,
                 ),
-                child: _image != null
-                    ? Image.file(_image!)
-                    : Icon(Icons.person, color: Colors.grey[700], size: 50),
+                child: _image != null ? Image.file(_image!) : Icon(Icons.person, color: Colors.grey[700], size: 50),
               ),
             ),
             Expanded(
@@ -246,10 +227,7 @@ class _VillageMemberState extends State<VillageMember> {
                               return;
                             }
 
-                            BaseItemModel response =
-                                await FirebaseSignUpService()
-                                    .isUserAleadyRegistered(
-                                        _phoneNumberController.text);
+                            BaseItemModel response = await FirebaseSignUpService().isUserAleadyRegistered(_phoneNumberController.text);
 
                             if (response.success) {
                               Fluttertoast.showToast(
@@ -279,8 +257,7 @@ class _VillageMemberState extends State<VillageMember> {
                       child: Form(
                         key: _firstPageFormKey,
                         child: TextFieldBuilder(
-                          questions:
-                              _appConstants.villageMemberFirstPageQuestions,
+                          questions: _appConstants.villageMemberFirstPageQuestions,
                           controllers: _firstPageControllers,
                         ),
                       ),
@@ -292,8 +269,7 @@ class _VillageMemberState extends State<VillageMember> {
                       child: Form(
                         key: _secondPageFormKey,
                         child: TextFieldBuilder(
-                          questions:
-                              _appConstants.villageMemberSecondPageQuestions,
+                          questions: _appConstants.villageMemberSecondPageQuestions,
                           controllers: _secondPageControllers,
                         ),
                       ),
@@ -305,8 +281,7 @@ class _VillageMemberState extends State<VillageMember> {
                       child: Form(
                         key: _thirdPageFormKey,
                         child: TextFieldBuilder(
-                          questions:
-                              _appConstants.villageMemberThirdPageQuestions,
+                          questions: _appConstants.villageMemberThirdPageQuestions,
                           controllers: _thirdPageControllers,
                         ),
                       ),
@@ -318,8 +293,7 @@ class _VillageMemberState extends State<VillageMember> {
                       child: Form(
                         key: _fourthPageFormKey,
                         child: TextFieldBuilder(
-                          questions:
-                              _appConstants.villageMemberFourthPageQuestions,
+                          questions: _appConstants.villageMemberFourthPageQuestions,
                           controllers: _fourthPageControllers,
                         ),
                       ),
@@ -331,8 +305,7 @@ class _VillageMemberState extends State<VillageMember> {
                       child: Form(
                         key: _fifthPageFormKey,
                         child: TextFieldBuilder(
-                          questions:
-                              _appConstants.villageMemberFifthPageQuestions,
+                          questions: _appConstants.villageMemberFifthPageQuestions,
                           controllers: _fifthPageControllers,
                         ),
                       ),
@@ -346,8 +319,7 @@ class _VillageMemberState extends State<VillageMember> {
                         child: Column(
                           children: [
                             TextFieldBuilder(
-                              questions:
-                                  _appConstants.villageMemberSixthPageQuestions,
+                              questions: _appConstants.villageMemberSixthPageQuestions,
                               controllers: _sixthPageControllers,
                             ),
                             SizedBox(height: size.height * 0.04),
@@ -388,9 +360,7 @@ class _VillageMemberState extends State<VillageMember> {
                       margin: const EdgeInsets.symmetric(horizontal: 8.0),
                       padding: const EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
-                        color: _currentPage == index
-                            ? AppColors.primary
-                            : Colors.grey,
+                        color: _currentPage == index ? AppColors.primary : Colors.grey,
                         shape: BoxShape.circle,
                       ),
                       child: Text(

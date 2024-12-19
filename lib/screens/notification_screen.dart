@@ -52,9 +52,8 @@ class NotificationsScreen extends StatelessWidget {
             itemCount: notifications.length,
             itemBuilder: (context, index) {
               var notification = notifications[index].data() as Map<String, dynamic>;
-
               String message = notification['message'] ?? 'No message';
-              String mobileNumber = notification['mobileNumber'] ?? 'N/A';
+              String mobileNumber = notification['mobileOrWhatsapp'].toString();
 
               return ListTile(
                 leading: GestureDetector(

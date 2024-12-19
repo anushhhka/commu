@@ -5,6 +5,7 @@ import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/main.dart';
 import 'package:heyoo/models/base_item_model.dart';
 import 'package:heyoo/models/niyani_model.dart';
+import 'package:heyoo/models/village_member_model.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/contact_screen.dart';
 import 'package:heyoo/screens/profile/niyani_address_book.dart';
@@ -66,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           }
 
-          final NiyaniModel userProfile = snapshot.data!.data;
+          final dynamic userProfile = snapshot.data!.data;
 
           return SingleChildScrollView(
             child: Column(
@@ -93,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Text(
-                  userProfile.fullNameOfTheMarriedDaughter,
+                  userProfile is NiyaniModel ? userProfile.fullNameOfTheMarriedDaughter : userProfile.firstNameOfTheMember,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 20,
@@ -127,7 +128,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                const SizedBox(height: 20),
                 PrimaryElevatedButton(
                   buttonBackgroundColor: AppColors.white.withOpacity(0.1),
                   borderRadius: BorderRadius.zero,
