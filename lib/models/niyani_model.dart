@@ -53,45 +53,36 @@ class NiyaniModel {
     required this.villageName,
   });
 
-factory NiyaniModel.fromJson(Map<String, dynamic> json) {
-  return NiyaniModel(
-    activityOrEmployeeStatus: json['activityOrEmployeeStatus']?.toString() ?? '',
-    additionalNumber: json['additionalNumber'] != null
-        ? int.tryParse(json['additionalNumber'].toString())
-        : null,
-    bloodGroup: json['bloodGroup']?.toString() ?? '',
-    city: json['city']?.toString(),
-    dateOfBirth: json['dateOfBirth'] != null
-        ? (json['dateOfBirth'] as Timestamp)
-        : null,
-    education: json['education']?.toString() ?? '',
-    email: json['email']?.toString() ?? '',
-    emailAddress: json['emailAddress']?.toString(),
-    fullNameOfMavitra: json['fullNameOfMavitra']?.toString() ?? '',
-    fullNameOfTheMarriedDaughter:
-        json['fullNameOfTheMarriedDaughter']?.toString() ?? '',
-    hobbies: json['hobbies']?.toString() ?? '',
-    imagePath: json['image_path']?.toString(),
-    isAdmin: json['isAdmin'] as bool? ?? false,
-    isVerified: json['isVerified'] as bool? ?? false,
-    maritalStatus: json['maritalStatus']?.toString(),
-    marriageDate: json['marriageDate'] != null
-        ? (json['marriageDate'] as Timestamp)
-        : null,
-    mobileOrWhatsappNumber: int.tryParse(json['mobileOrWhatsappNumber'].toString()) ?? 0,
-    officeAddress: json['officeAddress']?.toString(),
-    pinCode: int.tryParse(json['pinCode'].toString()) ?? 0,
-    residentialAddress: json['residentialAddress']?.toString() ?? '',
-    state: json['state']?.toString() ?? '',
-    timestamp: json['timestamp'] as Timestamp,
-    totalNumberOfFamilyMembers: json['totalNumberOfFamilyMembers'] is int
-        ? json['totalNumberOfFamilyMembers'] as int
-        : int.tryParse(json['totalNumberOfFamilyMembers'].toString()) ?? 0,
-    villageName: json['villageName']?.toString() ?? '',
-  );
-}
-
-
+  factory NiyaniModel.fromJson(Map<String, dynamic> json) {
+    return NiyaniModel(
+      activityOrEmployeeStatus: json['activityOrEmployeeStatus']?.toString() ?? '',
+      additionalNumber: json['additionalNumber'] != null ? int.tryParse(json['additionalNumber'].toString()) : null,
+      bloodGroup: json['bloodGroup']?.toString() ?? '',
+      city: json['city']?.toString(),
+      dateOfBirth: json['dateOfBirth'] != null ? (json['dateOfBirth'] as Timestamp) : null,
+      education: json['education']?.toString() ?? '',
+      email: json['email']?.toString() ?? '',
+      emailAddress: json['emailAddress']?.toString(),
+      fullNameOfMavitra: json['fullNameOfMavitra']?.toString() ?? '',
+      fullNameOfTheMarriedDaughter: json['fullNameOfTheMarriedDaughter']?.toString() ?? '',
+      hobbies: json['hobbies']?.toString() ?? '',
+      imagePath: json['image_path']?.toString(),
+      isAdmin: json['isAdmin'] as bool? ?? false,
+      isVerified: json['isVerified'] as bool? ?? false,
+      maritalStatus: json['maritalStatus']?.toString(),
+      marriageDate: json['marriageDate'] != null ? (json['marriageDate'] as Timestamp) : null,
+      mobileOrWhatsappNumber: int.tryParse(json['mobileOrWhatsappNumber'].toString()) ?? 0,
+      officeAddress: json['officeAddress']?.toString(),
+      pinCode: int.tryParse(json['pinCode'].toString()) ?? 0,
+      residentialAddress: json['residentialAddress']?.toString() ?? '',
+      state: json['state']?.toString() ?? '',
+      timestamp: json['timestamp'] as Timestamp,
+      totalNumberOfFamilyMembers: json['totalNumberOfFamilyMembers'] is int
+          ? json['totalNumberOfFamilyMembers'] as int
+          : int.tryParse(json['totalNumberOfFamilyMembers'].toString()) ?? 0,
+      villageName: json['villageName']?.toString() ?? '',
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {

@@ -128,6 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
+                const SizedBox(height: 20),
                 PrimaryElevatedButton(
                   buttonBackgroundColor: AppColors.white.withOpacity(0.1),
                   borderRadius: BorderRadius.zero,

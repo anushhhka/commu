@@ -130,7 +130,7 @@ class _VillageMemberState extends State<VillageMember> {
         grandMotherOrMotherInLawName: _secondPageControllers[1].text,
         grandfatherOrFatherInLawName: _secondPageControllers[0].text,
         hobbies: _thirdPageControllers[6].text,
-        imagePath: storageUrl,
+        imagePath: storageUrl ?? '',
         isAdmin: false,
         isVerified: false,
         maritalStatus: _fifthPageControllers[0].text,

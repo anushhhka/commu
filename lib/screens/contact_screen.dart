@@ -35,47 +35,47 @@ class ContactAddress extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Rajesh Chheda - 9892455166",
-                    style: Typo.titleLarge.copyWith(color: Colors.black),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          // Function to open phone dialer
-                          launchUrl(Uri.parse("tel:+919892455166"));
-                        },
-                        child: const Icon(Icons.phone),
-                      ),
-                      const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: () {
-                          _openWhatsApp("+919892455166");
-                        },
-                        child: const FaIcon(
-                          FontAwesomeIcons.whatsapp,
-                          color: Colors.green,
-                          size: 35,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
+            // Container(
+            //   margin: const EdgeInsets.all(10),
+            //   padding: const EdgeInsets.all(10),
+            //   decoration: BoxDecoration(
+            //     color: Colors.grey[200],
+            //     borderRadius: BorderRadius.circular(20),
+            //   ),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text(
+            //         "Rajesh Chheda - 9892455166",
+            //         style: Typo.titleLarge.copyWith(color: Colors.black),
+            //       ),
+            //       const SizedBox(height: 20),
+            //       Row(
+            //         children: [
+            //           const SizedBox(width: 10),
+            //           GestureDetector(
+            //             onTap: () {
+            //               // Function to open phone dialer
+            //               launchUrl(Uri.parse("tel:+919892455166"));
+            //             },
+            //             child: const Icon(Icons.phone),
+            //           ),
+            //           const SizedBox(width: 20),
+            //           GestureDetector(
+            //             onTap: () {
+            //               _openWhatsApp("+919892455166");
+            //             },
+            //             child: const FaIcon(
+            //               FontAwesomeIcons.whatsapp,
+            //               color: Colors.green,
+            //               size: 35,
+            //             ),
+            //           ),
+            //         ],
+            //       )
+            //     ],
+            //   ),
+            // ),
             Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),

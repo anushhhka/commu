@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -54,6 +55,8 @@ class NotificationsScreen extends StatelessWidget {
               var notification = notifications[index].data() as Map<String, dynamic>;
               String message = notification['message'] ?? 'No message';
               String mobileNumber = notification['mobileOrWhatsapp'].toString();
+              Timestamp timestamp = notification['timestamp'] as Timestamp;
+              String formattedDate = DateFormat('dd/MM/yyyy').format(timestamp.toDate());
 
               return ListTile(
                 leading: GestureDetector(
@@ -63,6 +66,7 @@ class NotificationsScreen extends StatelessWidget {
                   child: const Icon(Icons.call),
                 ),
                 title: Text(message),
+                subtitle: Text(formattedDate),
                 trailing: GestureDetector(
                   onTap: () {
                     _openWhatsApp(mobileNumber);
