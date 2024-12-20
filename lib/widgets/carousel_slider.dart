@@ -22,8 +22,7 @@ class _CarouselSliderState extends State<CarouselSlider> {
   }
 
   fetchCarousel() async {
-    var carousels =
-        await FirebaseFirestore.instance.collection('carousel').get();
+    var carousels = await FirebaseFirestore.instance.collection('carousel').get();
     mapRecords(carousels);
   }
 
@@ -43,47 +42,42 @@ class _CarouselSliderState extends State<CarouselSlider> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return isLoaded
-        ? Container(
-            margin: const EdgeInsets.all(6),
-            width: double.infinity,
+        ? SizedBox(
+            width: screenWidth, // Explicitly set the width to the screen width
             child: carousel.CarouselSlider.builder(
               itemCount: carouselList.length,
               itemBuilder: (context, index, realIndex) {
                 return ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(15), // Adjust as needed
                   child: CachedNetworkImage(
                     imageUrl: carouselList[index].image,
                     fit: BoxFit.cover,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) => Center(
-                            child: CircularProgressIndicator(
-                                value: downloadProgress.progress)),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                        Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                 );
               },
               options: carousel.CarouselOptions(
-                height: 100.0,
-                enlargeCenterPage: true,
+                height: screenHeight * 0.23, // Set height to 15% of the screen height
+                enlargeCenterPage: false, // Disable scaling to prevent shrinking effect
                 autoPlay: true,
-                aspectRatio: 16 / 9,
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enableInfiniteScroll: true,
                 autoPlayInterval: const Duration(seconds: 10),
                 autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                viewportFraction: 1.95,
+                viewportFraction: 1.0, // Each item takes 100% width
               ),
             ),
           )
         : const SizedBox(
             height: 20,
             child: Center(
-              child: AspectRatio(
-                aspectRatio: 1 / 1,
-                child: CircularProgressIndicator(),
-              ),
+              child: CircularProgressIndicator(),
             ),
           );
   }

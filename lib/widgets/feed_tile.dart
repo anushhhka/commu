@@ -19,7 +19,7 @@ class FeedTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(12),
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.white.withOpacity(0.1),
@@ -62,8 +62,7 @@ class FeedTile extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          if (text != null)
-            Text(text!, textAlign: TextAlign.left, style: Typo.bodyLarge),
+          if (text != null) Text(text!, textAlign: TextAlign.left, style: Typo.bodyLarge),
           const SizedBox(height: 10),
           if (image != null)
             AspectRatio(

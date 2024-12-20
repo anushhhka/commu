@@ -29,9 +29,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
           (item) => FeedsModel(
               text: item.data().containsKey('text') ? item['text'] : null,
               image: item.data().containsKey('image') ? item['image'] : null,
-              createdAt: item.data().containsKey('createdAt')
-                  ? item['createdAt']
-                  : null),
+              createdAt: item.data().containsKey('createdAt') ? item['createdAt'] : null),
         )
         .toList();
   }
@@ -67,7 +65,10 @@ class _FeedsScreenState extends State<FeedsScreen> {
               var feedslList = snapshot.data!;
               return Column(
                 children: [
-                  const CarouselSlider(),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CarouselSlider(),
+                  ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: feedslList.length,

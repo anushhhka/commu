@@ -73,21 +73,27 @@ class SpecialDayScreen extends StatelessWidget {
               String dob = dobTimestamp != null ? DateFormat('dd/MM/yyyy').format(dobTimestamp.toDate()) : 'N/A';
               String marriageDate = marriageTimestamp != null ? DateFormat('dd/MM/yyyy').format(marriageTimestamp.toDate()) : 'N/A';
 
-              int? mobileNumber = user['mobileOrWhatsappNumber'] as int?;
+              String? mobileNumber;
+              if (user['mobileOrWhatsappNumber'] is int) {
+                mobileNumber = user['mobileOrWhatsappNumber'].toString();
+              } else if (user['mobileOrWhatsappNumber'] is String) {
+                mobileNumber = user['mobileOrWhatsappNumber'];
+              }
+
               String filteredNumber = '';
               if (mobileNumber != null) {
-                if (mobileNumber.toString().length == 10) {
+                if (mobileNumber.length == 10) {
                   filteredNumber = '+91$mobileNumber';
                 } else {
-                  filteredNumber = mobileNumber.toString();
+                  filteredNumber = mobileNumber;
                 }
               }
+
               return Card(
                 color: dobTimestamp != null && dobTimestamp.toDate().day == DateTime.now().day && dobTimestamp.toDate().month == DateTime.now().month
                     ? Colors.grey[800]
                     : Colors.grey[900],
                 child: ListTile(
-                  // tileColor: Colors.grey[800],
                   title: Text(
                     'Name: ${user['firstNameOfTheMember'] ?? user['fullNameOfTheMarriedDaughter']}',
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -108,9 +114,9 @@ class SpecialDayScreen extends StatelessWidget {
                       Text(
                         'Marriage Date: $marriageDate',
                         style: TextStyle(
-                          color: dobTimestamp != null &&
-                                  dobTimestamp.toDate().day == DateTime.now().day &&
-                                  dobTimestamp.toDate().month == DateTime.now().month
+                          color: marriageTimestamp != null &&
+                                  marriageTimestamp.toDate().day == DateTime.now().day &&
+                                  marriageTimestamp.toDate().month == DateTime.now().month
                               ? Colors.green
                               : Colors.white,
                         ),
