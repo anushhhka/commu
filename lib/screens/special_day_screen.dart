@@ -32,6 +32,8 @@ class SpecialDayScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Special Days"),
         scrolledUnderElevation: 0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -61,6 +63,13 @@ class SpecialDayScreen extends StatelessWidget {
             DateTime aDate = aDob?.toDate() ?? aMarriageDate?.toDate() ?? DateTime(1970);
             DateTime bDate = bDob?.toDate() ?? bMarriageDate?.toDate() ?? DateTime(1970);
 
+            bool aIsToday = (aDob != null && aDob.toDate().day == now.day && aDob.toDate().month == now.month) ||
+                (aMarriageDate != null && aMarriageDate.toDate().day == now.day && aMarriageDate.toDate().month == now.month);
+            bool bIsToday = (bDob != null && bDob.toDate().day == now.day && bDob.toDate().month == now.month) ||
+                (bMarriageDate != null && bMarriageDate.toDate().day == now.day && bMarriageDate.toDate().month == now.month);
+
+            if (aIsToday && !bIsToday) return -1;
+            if (!aIsToday && bIsToday) return 1;
             return bDate.compareTo(aDate);
           });
 
