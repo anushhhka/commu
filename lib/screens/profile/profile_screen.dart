@@ -8,6 +8,7 @@ import 'package:heyoo/models/niyani_model.dart';
 import 'package:heyoo/models/village_member_model.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/contact_screen.dart';
+import 'package:heyoo/screens/gallery_screen.dart';
 import 'package:heyoo/screens/profile/niyani_address_book.dart';
 import 'package:heyoo/screens/profile/individual_profile_screen.dart';
 import 'package:heyoo/screens/profile/village_member_address_book.dart';
@@ -140,6 +141,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         builder: (context) => const VillageMemberAddressBook(),
                       ),
                     );
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.zero,
+                  buttonBorderColor: AppColors.white,
+                  buttonText: getTranslated(context, 'gallery'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const GalleryScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.zero,
+                  buttonBorderColor: AppColors.white,
+                  buttonText: getTranslated(context, 'committee'),
+                  onPressed: () {
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const GalleryScreen(),
+                    //   ),
+                    // );
                   },
                 ),
                 const SizedBox(height: 20),

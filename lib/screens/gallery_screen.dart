@@ -25,7 +25,6 @@ class _GalleryScreenState extends State<GalleryScreen> {
       appBar: AppBar(
         title: Text(getTranslated(context, 'gallery')),
         centerTitle: true,
-        automaticallyImplyLeading: false,
       ),
       body: FutureBuilder<List<CarouselModel>>(
         future: fetchGalleryImages(),

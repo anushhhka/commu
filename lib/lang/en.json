@@ -22,10 +22,12 @@
   "logout": "Logout",
   "select_language": "Select Language",
   "support": "Support",
+  "committee": "Committee",
 
   "announcements": "Announcements",
   "notifications": "Notifications",
   "gallery": "Gallery",
+  "special_days": "Special Days",
 
   "nana_asambia": "Nana Asambia"
 }

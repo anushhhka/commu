@@ -7,6 +7,7 @@ import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/screens/notification_screen.dart';
 import 'package:heyoo/screens/feeds_screen.dart';
 import 'package:heyoo/screens/gallery_screen.dart';
+import 'package:heyoo/screens/special_day_screen.dart';
 import 'package:heyoo/services/firebase/notification_service.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,8 +19,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   String? mobileToken = "";
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -39,17 +39,14 @@ class _MainScreenState extends State<MainScreen> {
   setFCMToken() async {
     mobileToken = await NotificationService.getMobileToken();
     if (mobileToken != null) {
-      FirebaseFirestore.instance
-          .collection('mobile_tokens')
-          .doc(FirebaseAuth.instance.currentUser!.phoneNumber)
-          .set({'token': mobileToken});
+      FirebaseFirestore.instance.collection('mobile_tokens').doc(FirebaseAuth.instance.currentUser!.phoneNumber).set({'token': mobileToken});
     }
   }
 
   final List<Widget> _widgetOptions = const [
     FeedsScreen(),
     NotificationsScreen(),
-    GalleryScreen(),
+    SpecialDayScreen(),
   ];
 
   int _selectedIndex = 0;
@@ -60,15 +57,9 @@ class _MainScreenState extends State<MainScreen> {
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.campaign),
-              label: getTranslated(context, 'announcements')),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.notifications),
-              label: getTranslated(context, 'notifications')),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.photo),
-              label: getTranslated(context, 'gallery')),
+          BottomNavigationBarItem(icon: const Icon(Icons.campaign), label: getTranslated(context, 'announcements')),
+          BottomNavigationBarItem(icon: const Icon(Icons.notifications), label: getTranslated(context, 'notifications')),
+          BottomNavigationBarItem(icon: const Icon(Icons.date_range_sharp), label: getTranslated(context, 'special_days')),
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {
