@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/models/feeds_model.dart';
+import 'package:heyoo/screens/notification_screen.dart';
 import 'package:heyoo/screens/profile/profile_screen.dart';
 import 'package:heyoo/widgets/carousel_slider.dart';
 import 'package:heyoo/widgets/feed_tile.dart';
@@ -47,6 +48,14 @@ class _FeedsScreenState extends State<FeedsScreen> {
             scaffoldKey.currentState?.openDrawer();
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NotificationsScreen()));
+            },
+          ),
+        ],
       ),
       drawer: const Drawer(
         child: ProfileScreen(),

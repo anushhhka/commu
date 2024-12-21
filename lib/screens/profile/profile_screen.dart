@@ -1,20 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/main.dart';
 import 'package:heyoo/models/base_item_model.dart';
 import 'package:heyoo/models/niyani_model.dart';
-import 'package:heyoo/models/village_member_model.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/screens/contact_screen.dart';
 import 'package:heyoo/screens/gallery_screen.dart';
-import 'package:heyoo/screens/profile/niyani_address_book.dart';
 import 'package:heyoo/screens/profile/individual_profile_screen.dart';
+import 'package:heyoo/screens/profile/niyani_address_book.dart';
 import 'package:heyoo/screens/profile/village_member_address_book.dart';
 import 'package:heyoo/services/firebase/profile_service.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -169,6 +170,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //     builder: (context) => const GalleryScreen(),
                     //   ),
                     // );
+                  },
+                ),
+                const SizedBox(height: 20),
+                PrimaryElevatedButton(
+                  buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.zero,
+                  buttonBorderColor: AppColors.white,
+                  buttonText: getTranslated(context, 'patrika'),
+                  onPressed: () async {
+                    final Uri url = Uri.parse('https://www.kutchipatrika.org');
+
+                    try {
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(
+                          url,
+                          mode: LaunchMode.externalApplication, // Opens in external browser
+                          webViewConfiguration: const WebViewConfiguration(
+                            enableJavaScript: true,
+                            enableDomStorage: true,
+                          ),
+                        );
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    } catch (e) {
+                      debugPrint('Error launching URL: $e');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to open $url')),
+                      );
+                    }
                   },
                 ),
                 const SizedBox(height: 20),

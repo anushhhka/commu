@@ -60,9 +60,6 @@ class SpecialDayScreen extends StatelessWidget {
             Timestamp? bMarriageDate = bData['marriageDate'] as Timestamp?;
 
             DateTime now = DateTime.now();
-            DateTime aDate = aDob?.toDate() ?? aMarriageDate?.toDate() ?? DateTime(1970);
-            DateTime bDate = bDob?.toDate() ?? bMarriageDate?.toDate() ?? DateTime(1970);
-
             bool aIsToday = (aDob != null && aDob.toDate().day == now.day && aDob.toDate().month == now.month) ||
                 (aMarriageDate != null && aMarriageDate.toDate().day == now.day && aMarriageDate.toDate().month == now.month);
             bool bIsToday = (bDob != null && bDob.toDate().day == now.day && bDob.toDate().month == now.month) ||
@@ -70,7 +67,7 @@ class SpecialDayScreen extends StatelessWidget {
 
             if (aIsToday && !bIsToday) return -1;
             if (!aIsToday && bIsToday) return 1;
-            return bDate.compareTo(aDate);
+            return 0;
           });
 
           return ListView.builder(
@@ -98,10 +95,14 @@ class SpecialDayScreen extends StatelessWidget {
                 }
               }
 
+              bool isToday =
+                  (dobTimestamp != null && dobTimestamp.toDate().day == DateTime.now().day && dobTimestamp.toDate().month == DateTime.now().month) ||
+                      (marriageTimestamp != null &&
+                          marriageTimestamp.toDate().day == DateTime.now().day &&
+                          marriageTimestamp.toDate().month == DateTime.now().month);
+
               return Card(
-                color: dobTimestamp != null && dobTimestamp.toDate().day == DateTime.now().day && dobTimestamp.toDate().month == DateTime.now().month
-                    ? Colors.grey[800]
-                    : Colors.grey[900],
+                color: isToday ? Colors.grey[800] : Colors.grey[900],
                 child: ListTile(
                   title: Text(
                     'Name: ${user['firstNameOfTheMember'] ?? user['fullNameOfTheMarriedDaughter']}',

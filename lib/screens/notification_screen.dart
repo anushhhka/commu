@@ -33,8 +33,7 @@ class NotificationsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Notifications"),
         centerTitle: true,
-                automaticallyImplyLeading: false,
-
+        // automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
