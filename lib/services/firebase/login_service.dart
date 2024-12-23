@@ -11,10 +11,26 @@ class FirebaseSignInService {
   Future<BaseItemModel> sendVerificationCode(String phoneNumber) async {
     try {
       // Check if the user exists in Firestore
-      bool userExists = await _firestore.collection('phone_numbers').doc(phoneNumber).get().then((doc) => doc.exists);
+      // bool userExists = await _firestore.collection('phone_numbers').doc(phoneNumber).get().then((doc) => doc.exists);
 
-      if (!userExists) {
+      // if (!userExists) {
+
+      //   return BaseItemModel(success: false, error: 'User not found');
+      // }
+      final QuerySnapshot userDocs = await FirebaseFirestore.instance
+          .collectionGroup('user_details')
+          .where(
+            'mobileOrWhatsappNumber',
+            isEqualTo: int.parse(phoneNumber),
+          )
+          .get();
+
+      if (userDocs.docs.isEmpty) {
         return BaseItemModel(success: false, error: 'User not found');
+      }
+
+      if ((userDocs.docs.first.data() as Map<String, dynamic>)['isVerified'] == false) {
+        return BaseItemModel(success: false, error: 'User not verified');
       }
 
       // Use Completer to await verificationId
