@@ -106,6 +106,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<void> clearSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
+  Future<void> _checkFirstTime(dynamic userProfile) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstTime = prefs.getBool('isFirstTimeProfileScreen') ?? true;
+
+    if (isFirstTime && (userProfile.imagePath == null || userProfile.imagePath.isEmpty || userProfile.imagePath.contains('drive'))) {
+      // Show dialog
+      _showFirstTimeDialog();
+
+      // Set isFirstTime to false
+      prefs.setBool('isFirstTimeProfileScreen', false);
+    }
+  }
+
+  void _showFirstTimeDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            getTranslated(context, 'profile_picture_missing'),
+            style: const TextStyle(color: AppColors.white),
+          ),
+          content: Text(
+            getTranslated(context, 'profile_picture_missing_message'),
+            style: const TextStyle(color: AppColors.white),
+          ),
+          actions: [
+            PrimaryElevatedButton(
+              buttonText: getTranslated(context, 'ok_text'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -132,6 +174,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           final dynamic userProfile = snapshot.data!.data;
 
+          // Check if it's the first time and the image path is null
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _checkFirstTime(userProfile);
+          });
+
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -144,50 +191,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     icon: const Icon(Icons.close, size: 30, color: AppColors.white),
                   ),
                 ),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 100,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.white, width: 2),
-                      ),
-                      child: userProfile.imagePath == null || userProfile.imagePath.contains('drive')
-                          ? const Icon(Icons.person, size: 50)
-                          : Image.network(
-                              userProfile.imagePath,
-                              fit: BoxFit.cover,
-                            ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        alignment: Alignment.center,
-                        decoration: const BoxDecoration(
+                GestureDetector(
+                  onTap: () {
+                    _pickImage();
+                  },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 100,
+                        height: 100,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColors.cloudGray,
+                          border: Border.all(color: AppColors.white, width: 2),
                         ),
-                        child: Center(
-                          child: IconButton(
-                            icon: const Icon(
+                        child: userProfile.imagePath == null || userProfile.imagePath.contains('drive')
+                            ? const Icon(Icons.person, size: 50)
+                            : Image.network(
+                                userProfile.imagePath,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.cloudGray,
+                          ),
+                          child: const Center(
+                            child: Icon(
                               Icons.edit,
                               color: AppColors.white,
                               size: 17,
                             ),
-                            onPressed: () async {
-                              _pickImage();
-                            },
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -377,8 +424,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 PrimaryElevatedButton(
                   buttonText: getTranslated(context, 'logout'),
                   borderRadius: BorderRadius.zero,
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    clearSharedPreferences();
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const LoginScreen(),

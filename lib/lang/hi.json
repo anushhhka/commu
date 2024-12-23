@@ -31,5 +31,8 @@
   "special_days": "विशेष दिन",
   "options": "विकल्प",
 
-  "nana_asambia": "नाना आसांबिया"
+  "nana_asambia": "नाना आसांबिया",
+  "profile_picture_missing": "प्रोफाइल फोटो गायब है",
+  "profile_picture_missing_message": "कृपया अपनी प्रोफ़ाइल तस्वीर अपलोड करने के लिए छवि पर टैप करें।",
+  "ok_text": "ठीक है"
 }

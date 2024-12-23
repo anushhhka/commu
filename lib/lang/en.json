@@ -31,5 +31,8 @@
   "special_days": "Special Days",
   "options": "Options",
 
-  "nana_asambia": "Nana Asambia"
+  "nana_asambia": "Nana Asambia",
+  "profile_picture_missing": "Profile Photo Missing",
+  "profile_picture_missing_message": "Please tap on the image to upload your profile picture.",
+  "ok_text": "OK"
 }

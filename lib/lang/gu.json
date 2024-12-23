@@ -29,5 +29,8 @@
   "special_days": "વિશેષ દિવસ",
   "options": "વિકલ્પ",
 
-  "nana_asambia": "નાના આસાંબિયા"
+  "nana_asambia": "નાના આસાંબિયા",
+  "profile_picture_missing": "પ્રોફાઇલ ચિત્ર ગુમ થયો છે",
+  "profile_picture_missing_message": "કૃપા કરીને તમારી પ્રોફાઇલ ચિત્ર અપલોડ કરવા માટે છબી પર ટેપ કરો.",
+  "ok_text": "ઠીક છે"
 }
