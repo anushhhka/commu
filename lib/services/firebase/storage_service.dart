@@ -10,9 +10,19 @@ class FirebaseStorageService {
       // Get the file name
       String fileName = basename(imageFile.path);
 
-      // Create a reference to the location you want to upload to in Firebase Storage
-      Reference storageRef =
-          _storage.ref().child('$phoneNumber/profile/$fileName');
+      // Create a reference to the folder you want to upload to in Firebase Storage
+      Reference folderRef = _storage.ref().child('$phoneNumber/profile');
+
+      // List all files in the folder
+      ListResult result = await folderRef.listAll();
+
+      // Delete all files in the folder
+      for (Reference fileRef in result.items) {
+        await fileRef.delete();
+      }
+
+      // Create a reference to the new file location
+      Reference storageRef = folderRef.child(fileName);
 
       // Upload the file to Firebase Storage
       UploadTask uploadTask = storageRef.putFile(imageFile);
@@ -25,6 +35,7 @@ class FirebaseStorageService {
 
       return downloadURL;
     } on FirebaseException catch (e) {
+      print(e.toString());
       return null;
     } catch (e) {
       return null;

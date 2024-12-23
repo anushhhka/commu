@@ -6,7 +6,6 @@ import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/screens/notification_screen.dart';
 import 'package:heyoo/screens/feeds_screen.dart';
-import 'package:heyoo/screens/gallery_screen.dart';
 import 'package:heyoo/screens/options_screen.dart';
 import 'package:heyoo/screens/special_day_screen.dart';
 import 'package:heyoo/services/firebase/notification_service.dart';

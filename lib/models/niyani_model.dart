@@ -66,7 +66,7 @@ class NiyaniModel {
       fullNameOfMavitra: json['fullNameOfMavitra']?.toString() ?? '',
       fullNameOfTheMarriedDaughter: json['fullNameOfTheMarriedDaughter']?.toString() ?? '',
       hobbies: json['hobbies']?.toString() ?? '',
-      imagePath: json['image_path']?.toString(),
+      imagePath: json['imagePath']?.toString(),
       isAdmin: json['isAdmin'] as bool? ?? false,
       isVerified: json['isVerified'] as bool? ?? false,
       maritalStatus: json['maritalStatus']?.toString(),

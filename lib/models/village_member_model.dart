@@ -84,7 +84,7 @@ class VillageMemberModel {
       grandMotherOrMotherInLawName: json['grandMotherOrMother-in-lawName']?.toString() ?? '',
       grandfatherOrFatherInLawName: json['grandfatherOrFather-in-lawName']?.toString() ?? '',
       hobbies: json['hobbies']?.toString() ?? '',
-      imagePath: json['image_path']?.toString() ?? '',
+      imagePath: json['imagePath']?.toString() ?? '',
       isAdmin: json['isAdmin'] as bool?,
       isVerified: json['isVerified'] as bool?,
       maritalStatus: json['maritalStatus']?.toString() ?? '',

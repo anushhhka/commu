@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:heyoo/services/firebase/storage_service.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,6 +50,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
     MyApp.setLocale(context, _locale); // Refresh the app with the new locale
   }
 
+  File? _image;
+  String? storageUrl;
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final File _image = File(pickedFile.path);
+      String userId = FirebaseAuth.instance.currentUser!.phoneNumber!;
+
+      // Remove country code if present
+      if (userId.startsWith('+91')) {
+        userId = userId.replaceFirst('+91', '');
+      }
+
+      try {
+        // Upload the image to Firebase Storage
+        final storageUrl = await FirebaseStorageService().uploadImage(_image, userId);
+
+        if (storageUrl != null) {
+          // Query all `user_details` documents matching the mobile number
+          // Query Firestore to find the user document
+          final QuerySnapshot userDocs = await FirebaseFirestore.instance
+              .collectionGroup('user_details')
+              .where(
+                'mobileOrWhatsappNumber',
+                isEqualTo: int.parse(userId),
+              )
+              .get();
+
+          if (userDocs.docs.isNotEmpty) {
+            // Update the `imagePath` field for the first matching document
+            await userDocs.docs.first.reference.update({'imagePath': storageUrl});
+            setState(() {}); // Refresh UI
+          } else {
+            print('User document not found');
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('User document not found')),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to upload image')),
+          );
+        }
+      } catch (e) {
+        // Handle errors
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -83,9 +144,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     icon: const Icon(Icons.close, size: 30, color: AppColors.white),
                   ),
                 ),
-                CircleAvatar(
-                  radius: 50,
-                  child: userProfile.imagePath != null ? Image.network(userProfile.imagePath!) : const Icon(Icons.person, size: 50),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.white, width: 2),
+                      ),
+                      child: userProfile.imagePath == null || userProfile.imagePath.contains('drive')
+                          ? const Icon(Icons.person, size: 50)
+                          : Image.network(
+                              userProfile.imagePath,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.cloudGray,
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.edit,
+                              color: AppColors.white,
+                              size: 17,
+                            ),
+                            onPressed: () async {
+                              _pickImage();
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 Text(
