@@ -1,4 +1,4 @@
-package heyoo.example.heyoo
+package com.nanaasambia.app
 
 import io.flutter.embedding.android.FlutterActivity
 
