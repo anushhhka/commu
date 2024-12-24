@@ -4,7 +4,6 @@ import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/models/feeds_model.dart';
 import 'package:heyoo/screens/notification_screen.dart';
 import 'package:heyoo/screens/profile/profile_screen.dart';
-import 'package:heyoo/widgets/carousel_slider.dart';
 import 'package:heyoo/widgets/feed_tile.dart';
 
 class FeedsScreen extends StatefulWidget {
@@ -42,12 +41,13 @@ class _FeedsScreenState extends State<FeedsScreen> {
       appBar: AppBar(
         title: Text(getTranslated(context, 'nana_asambia')),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            scaffoldKey.currentState?.openDrawer();
-          },
-        ),
+        automaticallyImplyLeading: false,
+        // leading: IconButton(
+        //   icon: const Icon(Icons.menu),
+        //   onPressed: () {
+        //     scaffoldKey.currentState?.openDrawer();
+        //   },
+        // ),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
@@ -57,9 +57,9 @@ class _FeedsScreenState extends State<FeedsScreen> {
           ),
         ],
       ),
-      drawer: const Drawer(
-        child: ProfileScreen(),
-      ),
+      // drawer: const Drawer(
+      //   child: ProfileScreen(),
+      // ),
       body: SafeArea(
         child: FutureBuilder<List<FeedsModel>>(
           future: fetchFeeds(),
@@ -74,10 +74,6 @@ class _FeedsScreenState extends State<FeedsScreen> {
               var feedslList = snapshot.data!;
               return Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CarouselSlider(),
-                  ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: feedslList.length,

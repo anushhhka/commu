@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:heyoo/config/themes/app_colors.dart';
 import 'package:heyoo/localization/language_constants.dart';
-import 'package:heyoo/screens/notification_screen.dart';
 import 'package:heyoo/screens/feeds_screen.dart';
 import 'package:heyoo/screens/options_screen.dart';
 import 'package:heyoo/screens/special_day_screen.dart';
@@ -44,8 +43,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   final List<Widget> _widgetOptions = [
+    OptionScreen(),
     const FeedsScreen(),
-    const OptionScreen(),
     const SpecialDayScreen(),
   ];
 
@@ -57,8 +56,8 @@ class _MainScreenState extends State<MainScreen> {
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: const Icon(Icons.campaign), label: getTranslated(context, 'announcements')),
           BottomNavigationBarItem(icon: const Icon(Icons.menu_open_outlined), label: getTranslated(context, 'options')),
+          BottomNavigationBarItem(icon: const Icon(Icons.campaign), label: getTranslated(context, 'announcements')),
           BottomNavigationBarItem(icon: const Icon(Icons.date_range_sharp), label: getTranslated(context, 'special_days')),
         ],
         currentIndex: _selectedIndex,

@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:heyoo/config/themes/typograph.dart';
 import 'package:heyoo/localization/language_constants.dart';
+import 'package:heyoo/screens/advertisement_screen.dart';
 import 'package:heyoo/screens/contact_screen.dart';
 import 'package:heyoo/screens/gallery_screen.dart';
 import 'package:heyoo/screens/profile/niyani_address_book.dart';
+import 'package:heyoo/screens/profile/profile_screen.dart';
 import 'package:heyoo/screens/profile/village_member_address_book.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OptionScreen extends StatelessWidget {
-  const OptionScreen({super.key});
+  OptionScreen({super.key});
+
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<Widget> screens = const [
     VillageMemberAddressBook(),
     NiyaniAddressBook(),
     GalleryScreen(),
     ContactAddress(),
-    ContactAddress(),
+    AdvertisementScreen(),
     ContactAddress(),
     // CommitteeScreen(),
     // PatrikaScreen(),
@@ -28,14 +32,34 @@ class OptionScreen extends StatelessWidget {
       getTranslated(context, 'niyani'),
       getTranslated(context, 'gallery'),
       getTranslated(context, 'support'),
-      getTranslated(context, 'committee'),
+      getTranslated(context, 'advertisement'),
       getTranslated(context, 'patrika'),
     ];
+
+    final List<IconData> icons = [
+      Icons.people,
+      Icons.person,
+      Icons.photo_album,
+      Icons.support_agent,
+      Icons.ad_units,
+      Icons.book,
+    ];
+
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
-        title: const Text('Options'),
+        title: Text(getTranslated(context, 'options')),
         automaticallyImplyLeading: false,
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            scaffoldKey.currentState?.openDrawer();
+          },
+        ),
+      ),
+      drawer: const Drawer(
+        child: ProfileScreen(),
       ),
       body: Center(
         child: GridView.count(
@@ -70,13 +94,25 @@ class OptionScreen extends StatelessWidget {
                     color: Colors.blue[100 * (index + 1 % 9)],
                   ),
                   child: Center(
-                      child: Text(
-                    options[index],
-                    style: Typo.bodyLarge.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          icons[index],
+                          size: 50,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          options[index],
+                          style: Typo.bodyLarge.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  )),
+                  ),
                 ),
               ),
             );
