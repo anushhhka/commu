@@ -29,9 +29,9 @@ class FirebaseSignInService {
         return BaseItemModel(success: false, error: 'User not found');
       }
 
-      // if ((userDocs.docs.first.data() as Map<String, dynamic>)['isVerified'] == false) {
-      //   return BaseItemModel(success: false, error: 'User not verified');
-      // }
+      if ((userDocs.docs.first.data() as Map<String, dynamic>)['isVerified'] == false) {
+        return BaseItemModel(success: false, error: 'User not verified');
+      }
 
       // Use Completer to await verificationId
       final Completer<String> completer = Completer<String>();

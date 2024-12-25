@@ -7,6 +7,7 @@ import 'package:heyoo/screens/gallery_screen.dart';
 import 'package:heyoo/screens/profile/niyani_address_book.dart';
 import 'package:heyoo/screens/profile/profile_screen.dart';
 import 'package:heyoo/screens/profile/village_member_address_book.dart';
+import 'package:heyoo/widgets/carousel_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OptionScreen extends StatelessWidget {
@@ -19,7 +20,7 @@ class OptionScreen extends StatelessWidget {
     NiyaniAddressBook(),
     GalleryScreen(),
     ContactAddress(),
-    AdvertisementScreen(),
+    ContactAddress(),
     ContactAddress(),
     // CommitteeScreen(),
     // PatrikaScreen(),
@@ -32,16 +33,16 @@ class OptionScreen extends StatelessWidget {
       getTranslated(context, 'niyani'),
       getTranslated(context, 'gallery'),
       getTranslated(context, 'support'),
-      getTranslated(context, 'advertisement'),
+      getTranslated(context, 'committee'),
       getTranslated(context, 'patrika'),
     ];
 
     final List<IconData> icons = [
-      Icons.people,
+      Icons.people_alt,
       Icons.person,
       Icons.photo_album,
       Icons.support_agent,
-      Icons.ad_units,
+      Icons.group_work,
       Icons.book,
     ];
 
@@ -61,62 +62,72 @@ class OptionScreen extends StatelessWidget {
       drawer: const Drawer(
         child: ProfileScreen(),
       ),
-      body: Center(
-        child: GridView.count(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          children: List.generate(6, (index) {
-            return Center(
-              child: GestureDetector(
-                onTap: () async {
-                  if (index == options.length - 1) {
-                    // Open link for the last index
-                    final Uri url = Uri.parse('https://www.kutchipatrika.org');
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  } else {
-                    // Navigate to the corresponding screen for other indices
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => screens[index]),
-                    );
-                  }
-                },
-                child: Container(
-                  height: 300,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    color: Colors.blue[100 * (index + 1 % 9)],
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          icons[index],
-                          size: 50,
-                          color: Colors.black,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const CarouselSlider(),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: List.generate(6, (index) {
+                  return Center(
+                    child: GestureDetector(
+                      onTap: () async {
+                        if (index == options.length - 1) {
+                          // Open link for the last index
+                          final Uri url = Uri.parse('https://www.kutchipatrika.org');
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        } else {
+                          // Navigate to the corresponding screen for other indices
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => screens[index]),
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: 300,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          color: Colors.blue[100 * (index + 1 % 9)],
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          options[index],
-                          style: Typo.bodyLarge.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                icons[index],
+                                size: 50,
+                                color: Colors.black,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                options[index],
+                                style: Typo.bodyLarge.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                }),
               ),
-            );
-          }),
+            ),
+          ],
         ),
       ),
     );
