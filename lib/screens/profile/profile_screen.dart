@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:heyoo/screens/admin/admin_screen.dart';
+import 'package:heyoo/screens/admin/unverified_users.dart';
 import 'package:heyoo/services/firebase/storage_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -252,6 +254,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                if (userProfile.isAdmin == true) ...[
+                  const SizedBox(height: 20),
+                  PrimaryElevatedButton(
+                    buttonBackgroundColor: AppColors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.zero,
+                    buttonBorderColor: AppColors.white,
+                    buttonText: getTranslated(context, 'admin'),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AdminScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
                 const SizedBox(height: 20),
                 PrimaryElevatedButton(
                   buttonBackgroundColor: AppColors.white.withOpacity(0.1),
@@ -307,20 +325,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                // const SizedBox(height: 20),
-                // PrimaryElevatedButton(
-                //   buttonBackgroundColor: AppColors.white.withOpacity(0.1),
-                //   borderRadius: BorderRadius.zero,
-                //   buttonBorderColor: AppColors.white,
-                //   buttonText: getTranslated(context, 'committee'),
-                //   onPressed: () {
-                //     // Navigator.of(context).push(
-                //     //   MaterialPageRoute(
-                //     //     builder: (context) => const GalleryScreen(),
-                //     //   ),
-                //     // );
-                //   },
-                // ),
                 const SizedBox(height: 20),
                 PrimaryElevatedButton(
                   buttonBackgroundColor: AppColors.white.withOpacity(0.1),
