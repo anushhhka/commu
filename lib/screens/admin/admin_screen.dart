@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heyoo/config/themes/typograph.dart';
 import 'package:heyoo/screens/admin/create_announcement.dart';
+import 'package:heyoo/screens/admin/create_gallery_screen.dart';
 import 'package:heyoo/screens/admin/unverified_users.dart';
 
 class AdminScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class AdminScreen extends StatelessWidget {
               case 2:
                 title = 'Gallery';
                 icon = Icons.event;
-                screen = const Placeholder(); // Replace with actual screen
+                screen = const CreateGallery(); // Replace with actual screen
                 break;
               default:
                 title = 'Unknown';

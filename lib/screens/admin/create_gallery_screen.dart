@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class CreateAnnouncement extends StatefulWidget {
-  const CreateAnnouncement({super.key});
+class CreateGallery extends StatefulWidget {
+  const CreateGallery({super.key});
 
   @override
-  _CreateAnnouncementState createState() => _CreateAnnouncementState();
+  _CreateGalleryState createState() => _CreateGalleryState();
 }
 
-class _CreateAnnouncementState extends State<CreateAnnouncement> {
+class _CreateGalleryState extends State<CreateGallery> {
   final TextEditingController _titleController = TextEditingController();
   File? _image;
   final ImagePicker _picker = ImagePicker();
@@ -35,9 +34,9 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
     });
 
     try {
-      if (_image == null && _titleController.text.isEmpty) {
+      if (_image == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please select an image or enter a title')),
+          const SnackBar(content: Text('Please select an image')),
         );
         setState(() {
           _isLoading = false;
@@ -46,26 +45,22 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
       }
       String? imageUrl;
       if (_image != null) {
-        final storageRef = FirebaseStorage.instance.ref().child('feeds/${DateTime.now().toIso8601String()}');
+        final storageRef = FirebaseStorage.instance.ref().child('gallery/${DateTime.now().toIso8601String()}');
         final uploadTask = storageRef.putFile(_image!);
         final snapshot = await uploadTask.whenComplete(() => {});
         imageUrl = await snapshot.ref.getDownloadURL();
       }
 
-      final title = _titleController.text;
-
-      final querySnapshot = await FirebaseFirestore.instance.collection('feeds').get();
+      final querySnapshot = await FirebaseFirestore.instance.collection('gallery').get();
       final docLength = querySnapshot.docs.length;
 
-      final newDocRef = FirebaseFirestore.instance.collection('feeds').doc((docLength + 1).toString());
+      final newDocRef = FirebaseFirestore.instance.collection('gallery').doc((docLength + 1).toString());
 
       await newDocRef.set({
-        'createdAt': Timestamp.now(),
         'image': imageUrl,
-        'text': title.trim().isEmpty ? null : title,
       });
 
-      Fluttertoast.showToast(msg: 'Announcement created successfully');
+      Fluttertoast.showToast(msg: 'Image uploaded successfully');
 
       _titleController.clear();
       setState(() {
@@ -86,7 +81,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Announcement'),
+        title: const Text('Add Image to Gallery'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -114,17 +109,10 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                       )),
               ),
             ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                hintText: 'Title',
-              ),
-            ),
             const SizedBox(height: 50),
             PrimaryElevatedButton(
               onPressed: _isLoading ? null : _createAnnouncement,
-              buttonText: 'Create Announcement',
+              buttonText: 'Save',
               child: _isLoading
                   ? const CircularProgressIndicator(
                       color: Colors.white,
