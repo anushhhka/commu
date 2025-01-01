@@ -4,7 +4,6 @@ import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/main.dart';
 import 'package:heyoo/screens/auth/login/login_screen.dart';
 import 'package:heyoo/widgets/primary_elevated_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectLanguage extends StatefulWidget {
   const SelectLanguage({super.key});
@@ -27,13 +26,13 @@ class _SelectLanguageState extends State<SelectLanguage> {
     return Scaffold(
       body: Center(
         child: Column(
-          spacing: 20,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               getTranslated(context, 'select_language'),
               style: Typo.titleLarge,
             ),
+            const SizedBox(height: 20),
             PrimaryElevatedButton(
                 buttonText: 'English',
                 buttonBorderColor: selectedLanguage == 'en' ? Colors.white : Colors.black,
@@ -41,6 +40,7 @@ class _SelectLanguageState extends State<SelectLanguage> {
                   _changeLanguage('en');
                   selectedLanguage = 'en';
                 }),
+            const SizedBox(height: 20),
             PrimaryElevatedButton(
                 buttonText: 'Hindi',
                 buttonBorderColor: selectedLanguage == 'hi' ? Colors.white : Colors.black,
@@ -48,6 +48,7 @@ class _SelectLanguageState extends State<SelectLanguage> {
                   _changeLanguage('hi');
                   selectedLanguage = 'hi';
                 }),
+            const SizedBox(height: 20),
             PrimaryElevatedButton(
                 buttonText: 'Gujarati',
                 buttonBorderColor: selectedLanguage == 'gu' ? Colors.white : Colors.black,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:heyoo/localization/language_constants.dart';
 import 'package:heyoo/models/feeds_model.dart';
 import 'package:heyoo/screens/notification_screen.dart';
-import 'package:heyoo/screens/profile/profile_screen.dart';
 import 'package:heyoo/widgets/feed_tile.dart';
 
 class FeedsScreen extends StatefulWidget {
@@ -18,7 +17,10 @@ class _FeedsScreenState extends State<FeedsScreen> {
 
   // Function to fetch feeds from Firestore
   Future<List<FeedsModel>> fetchFeeds() async {
-    var feeds = await FirebaseFirestore.instance.collection('feeds').get();
+    var feeds = await FirebaseFirestore.instance
+        .collection('feeds')
+        .orderBy('createdAt', descending: true) // Order by createdAt in descending order
+        .get();
     return mapRecords(feeds);
   }
 
